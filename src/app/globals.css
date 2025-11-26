@@ -1,0 +1,236 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Rubik+Glitch&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-sans text-slate-200 antialiased bg-stranger-black;
+  background-image: radial-gradient(circle at 50% 50%,
+      #1a0b0b 0%,
+      #000000 100%);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(255, 9, 9, 0.5);
+  /* Neon Red */
+  color: #ffffff;
+}
+
+/* Upside Down Particles Overlay */
+.upside-down-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 60%),
+    url("https://grainy-gradients.vercel.app/noise.svg");
+  background-size: cover, 200px 200px;
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+  z-index: 0;
+  animation: fog-move 60s linear infinite;
+}
+
+@keyframes fog-move {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 0%;
+  }
+}
+
+.glass-card {
+  position: relative;
+  @apply border border-red-900/30 backdrop-blur-md shadow-glow-red;
+  background: linear-gradient(140deg,
+      rgba(10, 10, 10, 0.8),
+      rgba(20, 0, 0, 0.6));
+}
+
+.glass-card2 {
+  position: relative;
+  @apply border border-red-900/30 backdrop-blur-md shadow-glow-red2;
+  background: linear-gradient(140deg,
+      rgba(10, 10, 10, 0.8),
+      rgba(20, 0, 0, 0.6));
+}
+
+/* Neon Border Effect */
+.neon-border {
+  border: 1px solid #ff0909;
+  box-shadow: 0 0 10px rgba(255, 9, 9, 0.4), inset 0 0 10px rgba(255, 9, 9, 0.2);
+  transition: all 0.3s ease;
+}
+
+.neon-border:hover {
+  box-shadow: 0 0 20px rgba(255, 9, 9, 0.8), inset 0 0 20px rgba(255, 9, 9, 0.4);
+  text-shadow: 0 0 8px rgba(255, 9, 9, 0.8);
+}
+
+.hover-underline {
+  position: relative;
+}
+
+.hover-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: #ff0909;
+  box-shadow: 0 0 10px #ff0909;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.hover-underline:hover::after,
+.hover-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.card-3d {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+  transform: translateY(-6px) rotateX(6deg) rotateY(-6deg);
+  box-shadow: 0 25px 60px -20px rgba(255, 9, 9, 0.15);
+}
+
+.card-3d::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  background: linear-gradient(145deg, rgba(255, 9, 9, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.card-3d:hover::after {
+  opacity: 1;
+}
+
+/* Glitch Effect Class */
+.glitch {
+  position: relative;
+  color: #fff;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #050505;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim-1 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 #00fff9;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim-2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip: rect(30px, 9999px, 10px, 0);
+  }
+
+  20% {
+    clip: rect(80px, 9999px, 90px, 0);
+  }
+
+  40% {
+    clip: rect(10px, 9999px, 50px, 0);
+  }
+
+  60% {
+    clip: rect(40px, 9999px, 20px, 0);
+  }
+
+  80% {
+    clip: rect(70px, 9999px, 60px, 0);
+  }
+
+  100% {
+    clip: rect(20px, 9999px, 80px, 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip: rect(10px, 9999px, 80px, 0);
+  }
+
+  20% {
+    clip: rect(60px, 9999px, 10px, 0);
+  }
+
+  40% {
+    clip: rect(90px, 9999px, 30px, 0);
+  }
+
+  60% {
+    clip: rect(20px, 9999px, 70px, 0);
+  }
+
+  80% {
+    clip: rect(50px, 9999px, 40px, 0);
+  }
+
+  100% {
+    clip: rect(80px, 9999px, 20px, 0);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff0909;
+  box-shadow: 0 0 10px #ff0909;
+}
