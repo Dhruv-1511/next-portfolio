@@ -167,14 +167,14 @@ const About = () => {
       title: "My Journey",
       content: personal.summary,
       icon: FiHeart,
-      gradient: "linear-gradient(135deg, #ff0909, #800000)",
+      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
     },
     {
       title: "Design Philosophy",
       content:
         "Human-centered decisions, inclusive interactions, and purposeful visuals that make interfaces memorable and accessible.",
       icon: FiTarget,
-      gradient: "linear-gradient(135deg, #888888, #333333)",
+      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
     },
     {
       title: "Motion & Animation",
@@ -188,7 +188,7 @@ const About = () => {
       content:
         "Ship resilient architectures, lighthouse-friendly experiences, and scalable code ecosystems that grow with teams.",
       icon: FiCode,
-      gradient: "linear-gradient(135deg, #1a1a1a, #000000)",
+      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
     },
   ];
 
@@ -219,7 +219,7 @@ const About = () => {
 
         {/* Contact Section - Redesigned */}
         <motion.div
-          className="mt-16 rounded-3xl border border-red-900/20 bg-black/60 p-8 backdrop-blur-xl shadow-[0_0_20px_rgba(255,0,0,0.1)]"
+          className="mt-16 rounded-3xl border border-red-500/50 hover:border-red-500 transition-colors duration-300 bg-black/60 p-8 backdrop-blur-xl shadow-[0_0_20px_rgba(255,0,0,0.1)]"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -236,7 +236,7 @@ const About = () => {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <motion.a
               href={`mailto:${personal.contact.email}`}
-              className="group relative overflow-hidden rounded-xl border border-red-900/20 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
+              className="group relative overflow-hidden rounded-xl border border-red-800/50 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
               whileHover={{ y: -2, scale: 1.02 }}
             >
               <div className="mb-3 flex items-center gap-2">
@@ -251,7 +251,7 @@ const About = () => {
             </motion.a>
             <motion.a
               href={`tel:${personal.contact.phone}`}
-              className="group relative overflow-hidden rounded-xl border border-red-900/20 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
+              className="group relative overflow-hidden rounded-xl border border-red-800/50 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
               whileHover={{ y: -2, scale: 1.02 }}
             >
               <div className="mb-3 flex items-center gap-2">
@@ -265,7 +265,7 @@ const About = () => {
               </p>
             </motion.a>
             <motion.div
-              className="group relative overflow-hidden rounded-xl border border-red-900/20 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
+              className="group relative overflow-hidden rounded-xl border border-red-800/50 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
               whileHover={{ y: -2, scale: 1.02 }}
             >
               <div className="mb-3 flex items-center gap-2">

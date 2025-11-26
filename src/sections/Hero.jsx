@@ -49,7 +49,7 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="inline-flex w-fit items-center gap-2 border-l-4 border-red-600 bg-red-900/10 px-5 py-2"
           >
-            <span className="text-sm font-bold uppercase tracking-[0.2em] text-red-500 font-mono animate-pulse">
+            <span className="text-sm font-bold uppercase tracking-[0.2em] text-red-400 font-mono">
               Frontend Developer // SUBJECT 011
             </span>
           </motion.div>

@@ -91,7 +91,7 @@ const ProfileCard = ({
             <motion.img
               src={avatarUrl}
               alt={name}
-              className="h-full w-full object-cover grayscale sepia-[.5] hover:grayscale-0 transition-all duration-500"
+              className="h-full w-full object-cover grayscale sepia-[.5] hover:grayscale-0 hover:sepia-0 transition-all duration-500"
               initial={{ scale: 1.05 }}
               animate={{ scale: 1 }}
               whileHover={{ scale: 1.05 }}

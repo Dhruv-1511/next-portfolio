@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import bg1 from "../assets/bg3.webp";
@@ -25,7 +27,7 @@ const Loader = ({ onComplete }) => {
     <div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/10 overflow-hidden"
       style={{
-        backgroundImage: `url(${bg1})`,
+        backgroundImage: `url(${bg1.src})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

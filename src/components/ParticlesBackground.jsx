@@ -1,99 +1,107 @@
-import { useEffect, useMemo, useState } from "react";
-import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
+"use client";
+
+import { useEffect, useRef } from "react";
 
 const ParticlesBackground = () => {
-  const [init, setInit] = useState(false);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setInit(true);
-    });
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animationFrameId;
+    let particles = [];
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    // Initial resize
+    resizeCanvas();
+
+    // Particle class
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1; // Size between 1 and 3
+
+        // Colors: Ash grey, white, and subtle red
+        const colors = ["#888888", "#cccccc", "#ff0909"];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+
+        // Movement
+        this.speedX = Math.random() * 1 - 0.5; // Slight horizontal drift
+        this.speedY = Math.random() * 1 + 0.5; // Downward movement
+        this.opacity = Math.random() * 0.5 + 0.1; // Opacity between 0.1 and 0.6
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        // Reset if out of bounds
+        if (this.y > canvas.height) {
+          this.y = 0 - this.size;
+          this.x = Math.random() * canvas.width;
+        }
+        if (this.x > canvas.width) {
+          this.x = 0;
+        } else if (this.x < 0) {
+          this.x = canvas.width;
+        }
+      }
+
+      draw() {
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+    }
+
+    const initParticles = () => {
+      particles = [];
+      const particleCount = 100; // Adjust density here
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((particle) => {
+        particle.update();
+        particle.draw();
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    initParticles();
+    animate();
+
+    window.addEventListener("resize", resizeCanvas);
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
-  const options = useMemo(
-    () => ({
-      background: {
-        color: {
-          value: "transparent",
-        },
-      },
-      fpsLimit: 60,
-      interactivity: {
-        detectsOn: "window",
-        events: {
-          onHover: {
-            enable: true,
-            mode: "repulse",
-          },
-          resize: true,
-        },
-        modes: {
-          repulse: {
-            distance: 100,
-            duration: 0.4,
-          },
-        },
-      },
-      particles: {
-        color: {
-          value: ["#888888", "#cccccc", "#ff0909"], // Ash grey, white, and subtle red
-        },
-        links: {
-          enable: false, // No links for spores
-        },
-        move: {
-          direction: "bottom", // Falling ash
-          enable: true,
-          outModes: {
-            default: "out",
-          },
-          random: true,
-          speed: 1, // Slow float
-          straight: false,
-        },
-        number: {
-          density: {
-            enable: true,
-            area: 800,
-          },
-          value: 150, // High density
-        },
-        opacity: {
-          value: { min: 0.1, max: 0.5 },
-          animation: {
-            enable: true,
-            speed: 1,
-            minimumValue: 0.1,
-            sync: false,
-          },
-        },
-        shape: {
-          type: "circle",
-        },
-        size: {
-          value: { min: 1, max: 3 },
-          random: true,
-        },
-      },
-      detectRetina: true,
-    }),
-    []
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-0 h-full w-full pointer-events-none"
+    />
   );
-
-  if (init) {
-    return (
-      <Particles
-        id="tsparticles"
-        options={options}
-        className="absolute inset-0 z-0 h-full w-full pointer-events-none"
-      />
-    );
-  }
-
-  return <></>;
 };
 
 export default ParticlesBackground;

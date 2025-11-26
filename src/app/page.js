@@ -25,9 +25,8 @@ export default function Home() {
   };
 
   return (
-    <>          
-    <BackgroundMusic />
-
+    <>
+      <BackgroundMusic />
       <AnimatePresence mode="wait">
         {showLoader && (
           <Loader key="loader" onComplete={handleLoaderComplete} />
