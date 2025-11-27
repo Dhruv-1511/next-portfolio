@@ -201,7 +201,7 @@ const Contact = () => {
                     : "text-red-500 group-hover:text-white drop-shadow-[0_0_8px_rgba(255,0,0,1)] group-hover:drop-shadow-[0_0_15px_rgba(255,0,0,1)]"
                 }`}
               >
-                {isLoading ? "Sending..." : "Send Messages"}
+                {isLoading ? "Sending..." : "Send Message"}
               </span>
 
               {/* Vine/Tendril Animations - Hyper-realistic twisted woody vines */}

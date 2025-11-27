@@ -11,7 +11,11 @@ const links = [
 
 const socialIcons = [
   { label: "GitHub", href: "https://github.com/Dhruv-1511", Icon: FiGithub },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/dhruv-sheladiya-a350582a6", Icon: FiLinkedin },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/dhruv-sheladiya-a350582a6",
+    Icon: FiLinkedin,
+  },
   { label: "Whatsapp", href: "https://wa.me/919510334996", Icon: FaWhatsapp },
 ];
 
@@ -29,8 +33,8 @@ const Footer = () => (
           Dhruv Sheladiya
         </p>
         <p className="text-sm text-slate-400">
-          © {new Date().getFullYear()} Crafted with React, Tailwind CSS, Contentful & Framer
-          Motion.
+          © {new Date().getFullYear()} Crafted with Next.js, Tailwind CSS,
+          Contentful & Framer Motion.
         </p>
       </div>
 
