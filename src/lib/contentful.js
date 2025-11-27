@@ -159,7 +159,7 @@ export const getExperiences = async () => {
         location: fields.location || "",
         workMode: fields.workMode || "",
         skills: fields.skills || [],
-        achievements: fields.achievements || [],
+        achievement: fields.achievement,
       };
     });
   } catch (error) {

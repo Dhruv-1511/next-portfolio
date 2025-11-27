@@ -141,60 +141,308 @@ const Contact = () => {
                 className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-brand-400 focus:outline-none"
               />
             </label>
+
             <motion.button
               type="submit"
               disabled={isLoading}
               whileHover={{
-                scale: isLoading ? 1 : 1.08,
-                boxShadow:
-                  "0 0 40px rgba(255, 9, 9, 1), 0 0 80px rgba(255, 9, 9, 0.5), inset 0 0 20px rgba(255, 9, 9, 0.2)",
+                scale: isLoading ? 1 : 1.05,
               }}
-              whileTap={{ scale: isLoading ? 1 : 0.92 }}
-              className={`group relative mt-8 flex items-center justify-center gap-2 overflow-hidden rounded-lg border-2 border-red-600/90 bg-gradient-to-br from-black via-red-950/30 to-black px-10 py-4 text-sm font-bold uppercase tracking-[0.5em] text-red-500 shadow-[0_0_25px_rgba(255,9,9,0.6),inset_0_0_15px_rgba(255,9,9,0.1)] hover:border-red-500 hover:text-white transition-all duration-500 font-serif ${
-                isLoading ? "opacity-70 cursor-not-allowed" : ""
+              whileTap={{ scale: isLoading ? 1 : 0.95 }}
+              className={`group relative mt-8 flex items-center justify-center gap-2 rounded-lg px-10 py-4 text-sm font-bold uppercase tracking-[0.5em] transition-all duration-500 font-serif ${
+                isLoading ? "cursor-not-allowed" : ""
               }`}
               style={{
-                textShadow:
-                  "0 0 10px rgba(255, 9, 9, 0.8), 0 0 20px rgba(255, 9, 9, 0.6), 0 0 30px rgba(255, 9, 9, 0.4)",
-                WebkitTextStroke: "0.5px #ff0909",
+                textShadow: isLoading
+                  ? "none"
+                  : "0 0 10px rgba(255, 9, 9, 0.8), 0 0 20px rgba(255, 9, 9, 0.6), 0 0 30px rgba(255, 9, 9, 0.4)",
+                WebkitTextStroke: isLoading ? "none" : "0.5px #ff0909",
               }}
             >
-              {/* Animated background glow */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-600/20 to-transparent"
-                animate={{
-                  x: ["-100%", "200%"],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              />
+              {/* Inner container for button background and content - keeps glow contained */}
+              <div
+                className={`absolute inset-0 overflow-hidden rounded-lg border-2 transition-all duration-500 ${
+                  isLoading
+                    ? "border-stone-600/90 bg-gradient-to-br from-black via-stone-800/30 to-black"
+                    : "border-red-600/90 bg-gradient-to-br from-black via-red-950/30 to-black shadow-[0_0_25px_rgba(255,9,9,0.6),inset_0_0_15px_rgba(255,9,9,0.1)] group-hover:border-red-500"
+                }`}
+              >
+                {/* Animated background glow - only when not loading */}
+                {!isLoading && (
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-red-600/20 to-transparent"
+                    animate={{
+                      x: ["-100%", "200%"],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                )}
 
-              {/* Flickering overlay effect */}
-              <motion.div
-                className="absolute inset-0 bg-red-600/10"
-                animate={{
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
+                {/* Corner accents */}
+                {!isLoading && (
+                  <>
+                    <div className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
+                    <div className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
+                    <div className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
+                    <div className="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
+                  </>
+                )}
+              </div>
 
-              {/* Button text with glow */}
-              <span className="relative z-10 drop-shadow-[0_0_8px_rgba(255,0,0,1)] group-hover:drop-shadow-[0_0_15px_rgba(255,0,0,1)] transition-all duration-300">
+              {/* Button text */}
+              <span
+                className={`relative z-10 transition-all duration-300 ${
+                  isLoading
+                    ? "text-stone-500"
+                    : "text-red-500 group-hover:text-white drop-shadow-[0_0_8px_rgba(255,0,0,1)] group-hover:drop-shadow-[0_0_15px_rgba(255,0,0,1)]"
+                }`}
+              >
                 {isLoading ? "Sending..." : "Send Message"}
               </span>
 
-              {/* Corner accents */}
-              <div className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-              <div className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-              <div className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-              <div className="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
+              {/* Vine/Tendril Animations - Hyper-realistic twisted woody vines */}
+              {/* Top-left vine */}
+              <motion.svg
+                className="absolute -top-6 -left-6 w-44 h-44 pointer-events-none z-20"
+                viewBox="0 0 200 200"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: isLoading ? 1 : 0,
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <defs>
+                  <filter id="woodRoughness">
+                    <feTurbulence
+                      type="fractalNoise"
+                      baseFrequency="0.08"
+                      numOctaves="4"
+                      result="noise"
+                    />
+                    <feDisplacementMap
+                      in="SourceGraphic"
+                      in2="noise"
+                      scale="3"
+                    />
+                    <feDropShadow
+                      dx="2"
+                      dy="2"
+                      stdDeviation="2"
+                      floodColor="#000"
+                      floodOpacity="0.5"
+                    />
+                  </filter>
+                  <linearGradient
+                    id="woodGrad2"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#2a231d" />
+                    <stop offset="40%" stopColor="#4a3b2a" />
+                    <stop offset="100%" stopColor="#1a1510" />
+                  </linearGradient>
+                </defs>
+
+                {/* Main twisted vine */}
+                <motion.path
+                  d="M16,12 C40,20 32,44 56,52 C72,64 68,76 88,84"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut" }}
+                />
+
+                {/* Secondary twisted vine */}
+                <motion.path
+                  d="M24,8 C32,28 20,52 44,68 C60,76 68,68 76,84"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="3.2"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.3 }}
+                />
+
+                {/* Thorns */}
+                <motion.path
+                  d="M40,32 L36,24 M56,56 L60,48 M76,72 L72,64"
+                  stroke="#1a1510"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isLoading ? 1 : 0 }}
+                  transition={{ delay: 1.5, duration: 0.5 }}
+                />
+
+                {/* Leaves */}
+                <g transform="translate(48, 56) rotate(-15)">
+                  <motion.path
+                    d="M0,0 Q6.4,-6.4 12.8,0 Q6.4,6.4 0,0 M0,0 L12.8,0"
+                    fill="#2d4a1e"
+                    stroke="#1a2b11"
+                    strokeWidth="0.5"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: isLoading ? 1 : 0 }}
+                    transition={{ delay: 1, duration: 0.5, type: "spring" }}
+                  />
+                </g>
+              </motion.svg>
+
+              {/* Top-right vine */}
+              <motion.svg
+                className="absolute -top-6 -right-12 w-44 h-44 pointer-events-none z-20"
+                viewBox="0 0 200 200"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: isLoading ? 1 : 0,
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.path
+                  d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
+                />
+                <motion.path
+                  d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="3.2"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.5 }}
+                />
+                <motion.path
+                  d="M120,32 L124,24 M100,56 L96,48 M88,72 L92,64"
+                  stroke="#1a1510"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: isLoading ? 1 : 0 }}
+                  transition={{ delay: 1.7, duration: 0.5 }}
+                />
+                <g transform="translate(112, 56) rotate(15)">
+                  <motion.path
+                    d="M0,0 Q6.4,-6.4 12.8,0 Q6.4,6.4 0,0 M0,0 L12.8,0"
+                    fill="#2d4a1e"
+                    stroke="#1a2b11"
+                    strokeWidth="0.5"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: isLoading ? 1 : 0 }}
+                    transition={{ delay: 1.2, duration: 0.5, type: "spring" }}
+                  />
+                </g>
+              </motion.svg>
+
+              {/* Bottom-left vine */}
+              <motion.svg
+                className="absolute -bottom-6 -left-6 w-44 h-44 pointer-events-none z-20"
+                viewBox="0 0 200 200"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: isLoading ? 1 : 0,
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.path
+                  d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.4 }}
+                />
+                <motion.path
+                  d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="3.2"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.7 }}
+                />
+                <g transform="translate(48, 128) rotate(-45)">
+                  <motion.path
+                    d="M0,0 Q6.4,-6.4 12.8,0 Q6.4,6.4 0,0 M0,0 L12.8,0"
+                    fill="#2d4a1e"
+                    stroke="#1a2b11"
+                    strokeWidth="0.5"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: isLoading ? 1 : 0 }}
+                    transition={{ delay: 1.4, duration: 0.5, type: "spring" }}
+                  />
+                </g>
+              </motion.svg>
+
+              {/* Bottom-right vine */}
+              <motion.svg
+                className="absolute -bottom-6 -right-12 w-44 h-44 pointer-events-none z-20"
+                viewBox="0 0 200 200"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: isLoading ? 1 : 0,
+                }}
+                transition={{ duration: 0.5 }}
+              >
+                <motion.path
+                  d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }}
+                />
+                <motion.path
+                  d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112"
+                  stroke="url(#woodGrad2)"
+                  strokeWidth="3.2"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#woodRoughness)"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.9 }}
+                />
+                <g transform="translate(112, 128) rotate(45)">
+                  <motion.path
+                    d="M0,0 Q6.4,-6.4 12.8,0 Q6.4,6.4 0,0 M0,0 L12.8,0"
+                    fill="#2d4a1e"
+                    stroke="#1a2b11"
+                    strokeWidth="0.5"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: isLoading ? 1 : 0 }}
+                    transition={{ delay: 1.6, duration: 0.5, type: "spring" }}
+                  />
+                </g>
+              </motion.svg>
             </motion.button>
 
             <motion.div

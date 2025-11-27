@@ -101,11 +101,9 @@ const Experience = () => {
                     </header>
                     <section aria-label="Key achievements">
                       <ul className="flex list-none flex-col gap-4 text-slate-300/90">
-                        {item.achievements.map((achievement) => (
-                          <li key={achievement} className="leading-relaxed">
-                            {achievement}
-                          </li>
-                        ))}
+                        {/* {item.achievements.map((achievement) => ( */}
+                        <li className="leading-relaxed">{item.achievement}</li>
+                        {/* ))} */}
                       </ul>
                     </section>
                     {item.skills?.length ? (
