@@ -450,7 +450,7 @@ const Contact = () => {
               animate={{ opacity: submitted ? 1 : 0, y: submitted ? 0 : 20 }}
               className="mt-4 text-sm text-green-400"
             >
-              ✅ Thanks! Your message has been sent successfully.
+              ✅ Thanks! Your message has been sent successfully. 
             </motion.div>
 
             <motion.div
