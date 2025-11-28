@@ -30,7 +30,7 @@ const Contact = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
   if (!personal || !socials || socials.length === 0) {
