@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   FiMail,
@@ -14,8 +14,17 @@ import SectionHeading from "../components/SectionHeading";
 import { useContentfulData } from "../context/ContentfulContext";
 
 const InteractivePhoto = ({ personal }) => {
+  const [isMobile, setIsMobile] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+
+  useEffect(() => {
+    setIsMobile(
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    );
+  }, []);
 
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
     stiffness: 300,
@@ -27,6 +36,9 @@ const InteractivePhoto = ({ personal }) => {
   });
 
   const handleMouseMove = (event) => {
+    // Disable on mobile for performance
+    if (isMobile) return;
+
     const rect = event.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -39,6 +51,7 @@ const InteractivePhoto = ({ personal }) => {
   };
 
   const handleMouseLeave = () => {
+    if (isMobile) return;
     x.set(0);
     y.set(0);
   };
@@ -50,11 +63,15 @@ const InteractivePhoto = ({ personal }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="relative"
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
+      style={
+        isMobile
+          ? {}
+          : {
+              rotateX,
+              rotateY,
+              transformStyle: "preserve-3d",
+            }
+      }
     >
       <div className="relative overflow-hidden rounded-3xl border border-red-900/30 bg-black p-4 shadow-[0_0_30px_rgba(255,0,0,0.1)]">
         {/* Photo Container */}
@@ -68,20 +85,22 @@ const InteractivePhoto = ({ personal }) => {
           <motion.img
             src={personal.redImg}
             alt={`${personal.name} portrait`}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover sepia-[.4] hover:sepia-0 transition-all duration-500"
-            animate={{ scale: [1, 1.05, 1] }}
+            animate={isMobile ? {} : { scale: [1, 1.05, 1] }}
             transition={{
               duration: 8,
-              repeat: Infinity,
+              repeat: isMobile ? 0 : Infinity,
               ease: "easeInOut",
             }}
           />
           <motion.div
             className="absolute inset-0 bg-gradient-to-tr from-red-900/20 via-transparent to-black/40"
-            animate={{ opacity: [0.3, 0.5, 0.3] }}
+            animate={isMobile ? { opacity: 0.4 } : { opacity: [0.3, 0.5, 0.3] }}
             transition={{
               duration: 6,
-              repeat: Infinity,
+              repeat: isMobile ? 0 : Infinity,
               ease: "easeInOut",
             }}
           />
@@ -90,13 +109,17 @@ const InteractivePhoto = ({ personal }) => {
         {/* Decorative Border Glow */}
         <motion.div
           className="absolute inset-0 rounded-3xl border border-red-600/30"
-          animate={{
-            boxShadow: [
-              "0 0 20px rgba(255, 9, 9, 0.1)",
-              "0 0 40px rgba(255, 9, 9, 0.2)",
-              "0 0 20px rgba(255, 9, 9, 0.1)",
-            ],
-          }}
+          animate={
+            isMobile
+              ? {}
+              : {
+                  boxShadow: [
+                    "0 0 20px rgba(255, 9, 9, 0.1)",
+                    "0 0 40px rgba(255, 9, 9, 0.2)",
+                    "0 0 20px rgba(255, 9, 9, 0.1)",
+                  ],
+                }
+          }
           transition={{
             duration: 3,
             repeat: Infinity,
@@ -194,7 +217,7 @@ const About = () => {
 
   return (
     <section id="about" className="relative scroll-mt-24 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-16 md:py-24">
         <SectionHeading
           eyebrow="About Me"
           title="Building interfaces with clarity, craft, and rhythm."

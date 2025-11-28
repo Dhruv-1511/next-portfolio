@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { FiBriefcase, FiMapPin } from "react-icons/fi";
 import SectionHeading from "../components/SectionHeading";
@@ -8,6 +8,15 @@ const Experience = () => {
   const { content } = useContentfulData();
   const { experiences, personal } = content;
   const timelineRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    );
+  }, []);
 
   // All hooks must be called before any conditional returns
   const { scrollYProgress } = useScroll({
@@ -16,10 +25,11 @@ const Experience = () => {
     layoutEffect: false,
   });
 
+  // Simplified spring on mobile for better performance
   const easedProgress = useSpring(scrollYProgress || 0, {
-    stiffness: 120,
-    damping: 24,
-    mass: 0.6,
+    stiffness: isMobile ? 80 : 120,
+    damping: isMobile ? 30 : 24,
+    mass: isMobile ? 1 : 0.6,
   });
 
   const indicatorOffset = useTransform(easedProgress, (value) => {
@@ -34,7 +44,7 @@ const Experience = () => {
 
   return (
     <section id="experience" className="relative scroll-mt-24">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-16 md:py-24">
         <SectionHeading
           eyebrow="Experience"
           title="Delivering momentum across agencies and product teams."
@@ -63,6 +73,8 @@ const Experience = () => {
                           <img
                             src={item.logoImage}
                             alt={`${item.company} logo`}
+                            loading="lazy"
+                            decoding="async"
                             className="h-full w-full object-contain"
                           />
                         </div>
@@ -143,6 +155,8 @@ const Experience = () => {
                     <img
                       src={personal.photo}
                       alt="Timeline avatar"
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover"
                     />
                   </div>

@@ -1,20 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { AnimatePresence } from "framer-motion";
 import Navbar from "../components/Navbar";
-import About from "../sections/About";
-import Contact from "../sections/Contact";
-import Education from "../sections/Education";
-import Experience from "../sections/Experience";
-import Footer from "../sections/Footer";
 import Hero from "../sections/Hero";
-import Projects from "../sections/Projects";
-import Skills from "../sections/Skills";
 import Loader from "../components/Loader";
 import ParticlesBackground from "../components/ParticlesBackground";
 import BackgroundMusic from "../components/BackgroundMusic";
 import { useContentfulData } from "../context/ContentfulContext";
+
+// Lazy load sections for better performance
+const About = lazy(() => import("../sections/About"));
+const Education = lazy(() => import("../sections/Education"));
+const Skills = lazy(() => import("../sections/Skills"));
+const Experience = lazy(() => import("../sections/Experience"));
+const Projects = lazy(() => import("../sections/Projects"));
+const Contact = lazy(() => import("../sections/Contact"));
+const Footer = lazy(() => import("../sections/Footer"));
 
 export default function Home() {
   const { loading: isLoading } = useContentfulData();
@@ -38,16 +40,30 @@ export default function Home() {
           <div className="upside-down-overlay" />
           <ParticlesBackground />
           <Navbar />
-          <main className="flex flex-col gap-24 pt-24 relative z-10">
+          <main className="flex flex-col gap-12 pt-24 relative z-10">
             <Hero />
-            <About />
-            <Education />
-            <Skills />
-            <Experience />
-            <Projects />
-            <Contact />
+            <Suspense fallback={<div className="h-screen" />}>
+              <About />
+            </Suspense>
+            <Suspense fallback={<div className="h-screen" />}>
+              <Education />
+            </Suspense>
+            <Suspense fallback={<div className="h-screen" />}>
+              <Skills />
+            </Suspense>
+            <Suspense fallback={<div className="h-screen" />}>
+              <Experience />
+            </Suspense>
+            <Suspense fallback={<div className="h-screen" />}>
+              <Projects />
+            </Suspense>
+            <Suspense fallback={<div className="h-screen" />}>
+              <Contact />
+            </Suspense>
           </main>
-          <Footer />
+          <Suspense fallback={<div />}>
+            <Footer />
+          </Suspense>
         </div>
       )}
     </>

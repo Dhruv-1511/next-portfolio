@@ -27,7 +27,7 @@ const Projects = () => {
       id="projects"
       className="relative scroll-mt-32 md:scroll-mt-40 overflow-hidden"
     >
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-16 md:py-24">
         <SectionHeading
           eyebrow="Projects"
           title="Crafting digital experiences that inspire and convert."

@@ -58,23 +58,34 @@ const Navbar = () => {
   }, []);
 
   const handleLinkClick = (id) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const navbarOffset = 96; // compensate for fixed navbar height
-      const elementPosition =
-        el.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - navbarOffset;
+    // Ensure body overflow is not hidden (in case project cards or other components set it)
+    document.body.style.overflow = "unset";
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    } else if (id === "home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    setActive(id);
+    // Close menu immediately
     setMenuOpen(false);
+    setActive(id);
+
+    // Start scrolling with minimal delay - menu will close during scroll
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) {
+        // Calculate position with navbar offset
+        const navbarHeight = 96;
+        const elementPosition =
+          el.getBoundingClientRect().top + window.scrollY - navbarHeight;
+
+        // Smooth scroll to position
+        window.scrollTo({
+          top: elementPosition,
+          behavior: "smooth",
+        });
+      } else if (id === "home") {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    });
   };
 
   const navVariants = useMemo(
@@ -222,8 +233,9 @@ const Navbar = () => {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="bg-black border-t border-red-900 md:hidden"
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="relative z-50 bg-black border-t border-red-900 md:hidden"
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="flex flex-col p-6 space-y-4">
                 {navLinks.map((link, index) => {
@@ -232,15 +244,19 @@ const Navbar = () => {
                     <motion.button
                       key={link.id}
                       type="button"
-                      className={`text-left text-lg font-bold uppercase tracking-widest font-serif ${
+                      className={`w-full text-left text-lg font-bold uppercase tracking-widest font-serif touch-manipulation cursor-pointer py-2 ${
                         isActive
                           ? "text-red-500 drop-shadow-[0_0_5px_rgba(255,0,0,0.8)]"
                           : "text-white"
                       }`}
-                      onClick={() => handleLinkClick(link.id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleLinkClick(link.id);
+                      }}
                       initial={{ x: -20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.05 }}
+                      transition={{ delay: index * 0.03, duration: 0.2 }}
                     >
                       {link.label}
                     </motion.button>

@@ -1,10 +1,20 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const BackgroundMusic = () => {
   const audioRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Initialize audio and attempt autoplay
   useEffect(() => {
+    // Detect mobile - disable audio on mobile for performance
+    const mobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    setIsMobile(mobile);
+
+    if (mobile || !audioRef.current) return; // Skip audio on mobile
+
     if (audioRef.current) {
       // Set volume to 30%
       audioRef.current.volume = 0.3;
@@ -56,8 +66,13 @@ const BackgroundMusic = () => {
     }
   }, []);
 
+  // Don't render audio on mobile for performance
+  if (isMobile) {
+    return null;
+  }
+
   return (
-    <audio ref={audioRef} loop autoPlay>
+    <audio ref={audioRef} loop autoPlay preload="none">
       <source src="/bg-music.mp3" type="audio/mpeg" />
       <source src="/bg-music.ogg" type="audio/ogg" />
       Your browser does not support the audio element.

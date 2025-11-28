@@ -41,7 +41,7 @@ const Hero = () => {
     >
       {/* <ParallaxShapes /> */}
 
-      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 py-8 md:grid-cols-[1.1fr,0.9fr]">
+      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 py-8 md:grid-cols-[1.1fr,0.9fr] items-center justify-center">
         <div className="relative flex flex-col gap-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}

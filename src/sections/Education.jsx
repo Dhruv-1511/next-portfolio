@@ -13,7 +13,7 @@ const Education = () => {
 
   return (
     <section id="education" className="relative scroll-mt-24">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-16 md:py-24">
         <SectionHeading
           eyebrow="Education"
           title="Academic foundation that shapes my approach."

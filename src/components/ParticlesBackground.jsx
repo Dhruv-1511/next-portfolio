@@ -1,19 +1,41 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ParticlesBackground = () => {
   const canvasRef = useRef(null);
+  const [isLowPerformance, setIsLowPerformance] = useState(false);
 
   useEffect(() => {
+    // Detect mobile and low-performance devices
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    const isLowEnd =
+      navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    // Check if device is low performance
+    if (prefersReducedMotion) {
+      setIsLowPerformance(true);
+      return; // Don't render particles at all
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", {
+      alpha: true,
+      desynchronized: true, // Better performance
+    });
     if (!ctx) return;
 
     let animationFrameId;
     let particles = [];
+    let frameCount = 0;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -28,16 +50,16 @@ const ParticlesBackground = () => {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1; // Size between 1 and 3
+        this.size = Math.random() * 2 + 1;
 
         // Colors: Ash grey, white, and subtle red
         const colors = ["#888888", "#cccccc", "#ff0909"];
         this.color = colors[Math.floor(Math.random() * colors.length)];
 
         // Movement
-        this.speedX = Math.random() * 1 - 0.5; // Slight horizontal drift
-        this.speedY = Math.random() * 1 + 0.5; // Downward movement
-        this.opacity = Math.random() * 0.5 + 0.1; // Opacity between 0.1 and 0.6
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 + 0.5;
+        this.opacity = Math.random() * 0.5 + 0.1;
       }
 
       update() {
@@ -68,13 +90,29 @@ const ParticlesBackground = () => {
 
     const initParticles = () => {
       particles = [];
-      const particleCount = 100; // Adjust density here
+      // Adaptive particle count based on device
+      let particleCount = 100; // Desktop default
+
+      if (isMobile) {
+        particleCount = 30; // Significantly reduce for mobile
+      } else if (isLowEnd) {
+        particleCount = 50; // Reduce for low-end desktops
+      }
+
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
     };
 
     const animate = () => {
+      frameCount++;
+
+      // On mobile, run at 30fps instead of 60fps
+      if (isMobile && frameCount % 2 !== 0) {
+        animationFrameId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((particle) => {
@@ -95,6 +133,11 @@ const ParticlesBackground = () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
+
+  // Don't render canvas if reduced motion is preferred
+  if (isLowPerformance) {
+    return null;
+  }
 
   return (
     <canvas

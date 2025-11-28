@@ -12,7 +12,7 @@ const Skills = () => {
 
   return (
     <section id="skills" className="relative scroll-mt-24 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-16 md:py-24">
         <SectionHeading
           eyebrow="Core Skills"
           title="Technologies I master and love working with."
@@ -72,6 +72,8 @@ const Skills = () => {
                           <img
                             src={skill.iconUrls}
                             alt={skill.name}
+                            loading="lazy"
+                            decoding="async"
                             className="h-full w-full object-contain"
                           />
                         </div>
