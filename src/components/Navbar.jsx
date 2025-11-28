@@ -34,57 +34,122 @@ const Navbar = memo(() => {
   const headerBlur = useTransform(scrollYProgress, [0, 0.1], [0, 24]);
 
   useEffect(() => {
-    // Disconnect previous observer if it exists
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
+    const updateActiveSection = () => {
+      const scrollPosition = window.scrollY;
+      const offset = 150; // Offset for navbar + some padding
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Store the intersection ratio for each visible section
-            visibleSectionsRef.current.set(
-              entry.target.id,
-              entry.intersectionRatio
-            );
-          } else {
-            // Remove sections that are no longer visible
-            visibleSectionsRef.current.delete(entry.target.id);
+      // Find which section is currently in view
+      // Check from bottom to top to get the section we've scrolled into
+      let currentSection = "home";
+
+      for (let i = navLinks.length - 1; i >= 0; i--) {
+        const section = document.getElementById(navLinks[i].id);
+        if (section) {
+          const sectionTop = section.offsetTop;
+          // If we've scrolled past the start of this section (accounting for offset)
+          if (scrollPosition + offset >= sectionTop) {
+            currentSection = navLinks[i].id;
+            break;
           }
-        });
+        }
+      }
 
-        // Find the most visible section (highest intersection ratio)
-        if (visibleSectionsRef.current.size > 0) {
-          let maxRatio = 0;
-          let mostVisibleSection = "";
+      setActive(currentSection);
+    };
 
-          visibleSectionsRef.current.forEach((ratio, id) => {
-            if (ratio > maxRatio) {
-              maxRatio = ratio;
-              mostVisibleSection = id;
+    // Initial check
+    updateActiveSection();
+
+    // Set up IntersectionObserver as a backup
+    const setupObserver = () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              visibleSectionsRef.current.set(
+                entry.target.id,
+                entry.intersectionRatio
+              );
+            } else {
+              visibleSectionsRef.current.delete(entry.target.id);
             }
           });
 
-          if (mostVisibleSection) {
-            setActive(mostVisibleSection);
-          }
-        }
-      },
-      {
-        threshold: [0, 0.25, 0.5, 0.75, 1.0],
-        rootMargin: "-100px 0px -66% 0px",
-      }
-    );
+          // Find the most visible section
+          if (visibleSectionsRef.current.size > 0) {
+            let maxRatio = 0;
+            let mostVisibleSection = "";
 
-    navLinks.forEach((link) => {
-      const element = document.getElementById(link.id);
-      if (element) {
-        observerRef.current.observe(element);
+            visibleSectionsRef.current.forEach((ratio, id) => {
+              if (ratio > maxRatio) {
+                maxRatio = ratio;
+                mostVisibleSection = id;
+              }
+            });
+
+            if (mostVisibleSection && maxRatio > 0.1) {
+              setActive(mostVisibleSection);
+            }
+          }
+        },
+        {
+          threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
+          rootMargin: "-120px 0px -50% 0px",
+        }
+      );
+
+      // Observe all available sections
+      navLinks.forEach((link) => {
+        const element = document.getElementById(link.id);
+        if (element) {
+          observerRef.current.observe(element);
+        }
+      });
+    };
+
+    // Initial observer setup
+    setupObserver();
+
+    // Re-setup observer after delay to catch lazy-loaded sections
+    const timeoutId = setTimeout(() => {
+      setupObserver();
+      updateActiveSection();
+    }, 1000);
+
+    // Scroll event handler (primary method)
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updateActiveSection();
+          ticking = false;
+        });
+        ticking = true;
       }
-    });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // Re-check periodically for lazy-loaded sections
+    const intervalId = setInterval(() => {
+      const allSectionsExist = navLinks.every(
+        (link) => document.getElementById(link.id) !== null
+      );
+      if (allSectionsExist) {
+        setupObserver();
+        updateActiveSection();
+        clearInterval(intervalId);
+      }
+    }, 500);
 
     return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+      window.removeEventListener("scroll", handleScroll);
       if (observerRef.current) {
         observerRef.current.disconnect();
       }

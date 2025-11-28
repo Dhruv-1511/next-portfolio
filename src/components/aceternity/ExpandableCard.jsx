@@ -348,7 +348,7 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
                           href={project.demo}
                           target="_blank"
                           rel="noreferrer"
-                          className="group/btn flex items-center gap-3 rounded-xl bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-xl shadow-glow-red transition-all hover:shadow-2xl"
+                          className="group/btn flex items-center gap-3 rounded-xl bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow-red transition-all hover:shadow-2xl"
                           whileHover={{ scale: 1.05, y: -2 }}
                           whileTap={{ scale: 0.95 }}
                         >
