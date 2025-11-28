@@ -30,7 +30,7 @@ const Contact = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
   if (!personal || !socials || socials.length === 0) {
@@ -149,7 +149,7 @@ const Contact = () => {
                 scale: isLoading ? 1 : 1.05,
               }}
               whileTap={{ scale: isLoading ? 1 : 0.95 }}
-              className={`group relative mt-8 flex items-center justify-center gap-2 rounded-lg px-10 py-4 text-sm font-bold uppercase tracking-[0.5em] transition-all duration-500 font-serif ${
+              className={`group relative mt-8 flex items-center justify-center gap-2 rounded-lg px-10 py-4 text-sm font-bold uppercase tracking-[0.5em] transition-all duration-500 font-serif max-w-[272px] w-full ${
                 isLoading ? "cursor-not-allowed" : ""
               }`}
               style={{
@@ -293,7 +293,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut" }}
+                  transition={{ duration: 1.25, ease: "easeInOut" }}
                 />
                 {/* Main twisted vine */}
                 <motion.path
@@ -305,7 +305,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut" }}
+                  transition={{ duration: 1.25, ease: "easeInOut" }}
                 />
 
                 {/* Secondary twisted vine - Green glow layer */}
@@ -319,7 +319,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.3 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.15 }}
                 />
                 {/* Secondary twisted vine */}
                 <motion.path
@@ -331,7 +331,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.3 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.15 }}
                 />
 
                 {/* Thorns */}
@@ -342,7 +342,7 @@ const Contact = () => {
                   strokeLinecap="round"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isLoading ? 1 : 0 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
+                  transition={{ delay: 0.75, duration: 0.25 }}
                 />
 
                 {/* Leaves */}
@@ -354,7 +354,7 @@ const Contact = () => {
                     strokeWidth="0.5"
                     initial={{ scale: 0 }}
                     animate={{ scale: isLoading ? 1 : 0 }}
-                    transition={{ delay: 1, duration: 0.5, type: "spring" }}
+                    transition={{ delay: 0.5, duration: 0.25, type: "spring" }}
                   />
                 </g>
               </motion.svg>
@@ -407,7 +407,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
+                  transition={{ duration: 1.25, ease: "easeInOut", delay: 0.1 }}
                 />
                 <motion.path
                   d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84 C56,88 40,92 24,96 C8,100 0,104 0,108"
@@ -418,7 +418,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
+                  transition={{ duration: 1.25, ease: "easeInOut", delay: 0.1 }}
                 />
                 {/* Secondary vine - Green glow layer */}
                 <motion.path
@@ -431,7 +431,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.5 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.25 }}
                 />
                 <motion.path
                   d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84 C68,88 56,92 44,96 C32,100 20,104 8,108"
@@ -442,7 +442,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.5 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.25 }}
                 />
                 <motion.path
                   d="M120,32 L124,24 M100,56 L96,48 M88,72 L92,64"
@@ -451,7 +451,7 @@ const Contact = () => {
                   strokeLinecap="round"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isLoading ? 1 : 0 }}
-                  transition={{ delay: 1.7, duration: 0.5 }}
+                  transition={{ delay: 0.85, duration: 0.25 }}
                 />
                 <g transform="translate(112, 56) rotate(15)">
                   <motion.path
@@ -461,7 +461,7 @@ const Contact = () => {
                     strokeWidth="0.5"
                     initial={{ scale: 0 }}
                     animate={{ scale: isLoading ? 1 : 0 }}
-                    transition={{ delay: 1.2, duration: 0.5, type: "spring" }}
+                    transition={{ delay: 0.6, duration: 0.25, type: "spring" }}
                   />
                 </g>
               </motion.svg>
@@ -514,7 +514,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.4 }}
+                  transition={{ duration: 1.25, ease: "easeInOut", delay: 0.2 }}
                 />
                 <motion.path
                   d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116 C104,112 120,108 136,104 C152,100 168,96 184,92"
@@ -525,7 +525,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.4 }}
+                  transition={{ duration: 1.25, ease: "easeInOut", delay: 0.2 }}
                 />
                 {/* Secondary vine - Green glow layer */}
                 <motion.path
@@ -538,7 +538,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.7 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.35 }}
                 />
                 <motion.path
                   d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112 C88,108 100,104 112,100 C124,96 136,92 148,88"
@@ -549,7 +549,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.7 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.35 }}
                 />
                 <g transform="translate(48, 128) rotate(-45)">
                   <motion.path
@@ -559,7 +559,7 @@ const Contact = () => {
                     strokeWidth="0.5"
                     initial={{ scale: 0 }}
                     animate={{ scale: isLoading ? 1 : 0 }}
-                    transition={{ delay: 1.4, duration: 0.5, type: "spring" }}
+                    transition={{ delay: 0.7, duration: 0.25, type: "spring" }}
                   />
                 </g>
               </motion.svg>
@@ -612,7 +612,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }}
+                  transition={{ duration: 1.25, ease: "easeInOut", delay: 0.3 }}
                 />
                 <motion.path
                   d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116 C56,112 40,108 24,104 C8,100 0,96 0,92"
@@ -623,7 +623,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }}
+                  transition={{ duration: 1.25, ease: "easeInOut", delay: 0.3 }}
                 />
                 {/* Secondary vine - Green glow layer */}
                 <motion.path
@@ -636,7 +636,7 @@ const Contact = () => {
                   opacity="0.6"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.9 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.45 }}
                 />
                 <motion.path
                   d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112 C68,108 56,104 44,100 C32,96 20,92 8,88"
@@ -647,7 +647,7 @@ const Contact = () => {
                   filter="url(#woodRoughness)"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: isLoading ? 1 : 0 }}
-                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.9 }}
+                  transition={{ duration: 1.1, ease: "easeInOut", delay: 0.45 }}
                 />
                 <g transform="translate(112, 128) rotate(45)">
                   <motion.path
@@ -657,7 +657,7 @@ const Contact = () => {
                     strokeWidth="0.5"
                     initial={{ scale: 0 }}
                     animate={{ scale: isLoading ? 1 : 0 }}
-                    transition={{ delay: 1.6, duration: 0.5, type: "spring" }}
+                    transition={{ delay: 0.8, duration: 0.25, type: "spring" }}
                   />
                 </g>
               </motion.svg>
