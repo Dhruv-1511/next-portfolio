@@ -27,7 +27,7 @@ const Hero = () => {
 
   const greeting = `I  AM  ${personal.name.toUpperCase()}`;
 
-  const handleContactClick = () => {
+  const handleContactClick = () => {  
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
