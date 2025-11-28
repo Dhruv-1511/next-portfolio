@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 
-const ParticlesBackground = () => {
+const ParticlesBackground = memo(() => {
   const canvasRef = useRef(null);
   const [isLowPerformance, setIsLowPerformance] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const particlesRef = useRef([]);
+  const animationFrameIdRef = useRef(null);
 
   useEffect(() => {
     // Detect mobile and low-performance devices
@@ -33,12 +35,12 @@ const ParticlesBackground = () => {
     const ctx = canvas.getContext("2d", {
       alpha: true,
       desynchronized: true, // Better performance
+      willReadFrequently: false, // Optimize for write operations
     });
     if (!ctx) return;
 
-    let animationFrameId;
-    let particles = [];
     let frameCount = 0;
+    const particles = particlesRef.current;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -94,19 +96,19 @@ const ParticlesBackground = () => {
     }
 
     const initParticles = () => {
-      particles = [];
+      particlesRef.current = [];
       // Adaptive particle count based on device and screen size
-      let particleCount = 100; // Desktop default
+      let particleCount = 80; // Desktop default (reduced from 100)
 
       if (mobile) {
         // Even fewer particles on very small screens
-        particleCount = window.innerWidth < 400 ? 15 : 25;
+        particleCount = window.innerWidth < 400 ? 10 : 20;
       } else if (isLowEnd) {
-        particleCount = 50; // Reduce for low-end desktops
+        particleCount = 40; // Reduce for low-end desktops
       }
 
       for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
+        particlesRef.current.push(new Particle());
       }
     };
 
@@ -115,7 +117,7 @@ const ParticlesBackground = () => {
 
       // On mobile, run at 30fps instead of 60fps for better performance
       if (mobile && frameCount % 2 !== 0) {
-        animationFrameId = requestAnimationFrame(animate);
+        animationFrameIdRef.current = requestAnimationFrame(animate);
         return;
       }
 
@@ -124,13 +126,15 @@ const ParticlesBackground = () => {
 
       // Batch rendering for better performance
       ctx.save();
-      particles.forEach((particle) => {
-        particle.update();
-        particle.draw();
-      });
+      const particleList = particlesRef.current;
+      const len = particleList.length;
+      for (let i = 0; i < len; i++) {
+        particleList[i].update();
+        particleList[i].draw();
+      }
       ctx.restore();
 
-      animationFrameId = requestAnimationFrame(animate);
+      animationFrameIdRef.current = requestAnimationFrame(animate);
     };
 
     initParticles();
@@ -141,18 +145,25 @@ const ParticlesBackground = () => {
     const handleResize = () => {
       if (mobile) {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(resizeCanvas, 200);
+        resizeTimeout = setTimeout(() => {
+          resizeCanvas();
+          initParticles(); // Reinitialize particles after resize
+        }, 250);
       } else {
         resizeCanvas();
+        initParticles();
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current);
+      }
       if (resizeTimeout) clearTimeout(resizeTimeout);
+      particlesRef.current = [];
     };
   }, [isMobile]);
 
@@ -165,8 +176,11 @@ const ParticlesBackground = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-0 h-full w-full pointer-events-none"
+      style={{ willChange: "contents" }}
     />
   );
-};
+});
+
+ParticlesBackground.displayName = "ParticlesBackground";
 
 export default ParticlesBackground;

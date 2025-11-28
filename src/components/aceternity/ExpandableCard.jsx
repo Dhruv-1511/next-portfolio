@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { FiArrowUpRight, FiX } from "react-icons/fi";
@@ -6,6 +7,26 @@ import { FiArrowUpRight, FiX } from "react-icons/fi";
 const ExpandableCard = ({ project, index, expanded, onExpand }) => {
   const [isHovered, setIsHovered] = useState(false);
   const isExpanded = expanded === index;
+
+  // Handle ESC key to close dialog
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    const handleEscape = (e) => {
+      if (e.key === "Escape") {
+        onExpand(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    // Prevent body scroll when dialog is open
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [isExpanded, onExpand]);
 
   return (
     <>
@@ -154,194 +175,203 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
         />
       </motion.div>
 
-      {/* Dialogue Box Overlay */}
-      <AnimatePresence>
-        {isExpanded && (
-          <>
-            {/* Backdrop (above navbar) */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm"
-              onClick={() => onExpand(null)}
-            />
+      {/* Dialog Overlay - Rendered via Portal to document.body */}
+      {typeof window !== "undefined" &&
+        createPortal(
+          <AnimatePresence mode="wait">
+            {isExpanded && (
+              <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                  onClick={() => onExpand(null)}
+                />
 
-            {/* Dialogue Box (pushed below navbar) */}
-            <motion.div
-              layoutId={`card-${index}`}
-              initial={{ opacity: 0, scale: 0.8, y: 50 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 50 }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-              }}
-              className="fixed left-4 right-4 top-24 bottom-4 z-[80] mx-auto max-w-5xl overflow-hidden rounded-3xl border border-brand-500/30 bg-gradient-to-br from-black/95 via-black/90 to-slate-950/95 shadow-glow-red backdrop-blur-2xl md:left-8 md:right-8 md:top-28 md:bottom-8 md:max-w-6xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <motion.button
-                onClick={() => onExpand(null)}
-                className="absolute right-6 top-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-slate-950/80 backdrop-blur-xl text-white transition-all hover:border-brand-500/50 hover:bg-brand-500/20"
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FiX size={24} />
-              </motion.button>
-
-              {/* Scrollable Content */}
-              <div className="h-full max-h-[85vh] overflow-y-auto">
-                {/* Hero Image Section */}
-                <div className="relative h-[500px] overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundImage: `url(${project.image || project.logo})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
-                    initial={{ scale: 1.2 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
-
-                  {/* Project Number */}
-                  <motion.div
-                    className="absolute left-8 top-8"
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: 0.2, type: "spring" }}
+                {/* Dialog Content - Properly centered */}
+                <motion.div
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby={`dialog-title-${index}`}
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 30,
+                  }}
+                  className="relative z-[80] w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-3xl border border-brand-500/30 bg-gradient-to-br from-black/95 via-black/90 to-slate-950/95 shadow-glow-red backdrop-blur-2xl md:max-w-6xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Close Button */}
+                  <motion.button
+                    onClick={() => onExpand(null)}
+                    className="absolute right-6 top-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-slate-950/80 backdrop-blur-xl text-white transition-all hover:border-brand-500/50 hover:bg-brand-500/20"
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-brand-500/70 bg-black/90 backdrop-blur-xl shadow-glow-red">
-                      <span className="text-3xl font-bold text-brand-300 font-serif">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                  </motion.div>
+                    <FiX size={24} />
+                  </motion.button>
 
-                  {/* Logo */}
-                  {project.logo && (
-                    <motion.div
-                      className="absolute right-8 top-8"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5 }}
-                    >
-                      <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-white/20 bg-slate-950/80 p-3 shadow-2xl backdrop-blur-xl">
-                        <img
-                          src={project.logo}
-                          alt={`${project.title} logo`}
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
+                  {/* Scrollable Content */}
+                  <div className="h-full max-h-[85vh] overflow-y-auto">
+                    {/* Hero Image Section */}
+                    <div className="relative h-[500px] overflow-hidden">
+                      <motion.div
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: `url(${
+                            project.image || project.logo
+                          })`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }}
+                        initial={{ scale: 1.2 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent" />
 
-                {/* Content Section */}
-                <div className="p-8 md:p-12 bg-gradient-to-b from-black/80 via-slate-950/95 to-black">
-                  {/* Category Badge */}
-                  <motion.div
-                    className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-500/40 bg-brand-500/15 px-4 py-1.5 shadow-glow-red"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <span className="h-2 w-2 rounded-full bg-brand-400" />
-                    <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-300 font-oswald">
-                      Featured Mission
-                    </span>
-                  </motion.div>
+                      {/* Project Number */}
+                      <motion.div
+                        className="absolute left-8 top-8"
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ delay: 0.2, type: "spring" }}
+                      >
+                        <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-brand-500/70 bg-black/90 backdrop-blur-xl shadow-glow-red">
+                          <span className="text-3xl font-bold text-brand-300 font-serif">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+                      </motion.div>
 
-                  {/* Title */}
-                  <motion.h2
-                    className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl font-marvel drop-shadow-[0_3px_16px_rgba(255,9,9,0.8)]"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <span className="bg-gradient-to-r from-white via-brand-300 to-brand-500 bg-clip-text text-transparent">
-                      {project.title}
-                    </span>
-                  </motion.h2>
-
-                  {/* Description */}
-                  <motion.p
-                    className="mb-8 text-lg leading-relaxed text-slate-200 font-sans"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.6 }}
-                  >
-                    {project.description}
-                  </motion.p>
-
-                  {/* Tech Stack */}
-                  <motion.div
-                    className="mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                  >
-                    <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
-                      Technologies Used
-                    </h3>
-                    <div className="flex flex-wrap gap-3">
-                      {project.stack.map((tag, tagIndex) => (
-                        <motion.span
-                          key={tag}
-                          className="rounded-lg border border-brand-500/40 bg-gradient-to-r from-black/70 via-slate-900/80 to-black/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-slate-100 backdrop-blur-sm"
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.8 + tagIndex * 0.05 }}
-                          whileHover={{
-                            scale: 1.05,
-                            borderColor: "rgba(99, 102, 241, 0.5)",
-                            color: "#a5b4fc",
-                          }}
+                      {/* Logo */}
+                      {project.logo && (
+                        <motion.div
+                          className="absolute right-8 top-8"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.5 }}
                         >
-                          {tag}
-                        </motion.span>
-                      ))}
+                          <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-white/20 bg-slate-950/80 p-3 shadow-2xl backdrop-blur-xl">
+                            <img
+                              src={project.logo}
+                              alt={`${project.title} logo`}
+                              className="h-full w-full object-contain"
+                            />
+                          </div>
+                        </motion.div>
+                      )}
                     </div>
-                  </motion.div>
 
-                  {/* Action Button */}
+                    {/* Content Section */}
+                    <div className="p-8 md:p-12 bg-gradient-to-b from-black/80 via-slate-950/95 to-black">
+                      {/* Category Badge */}
+                      <motion.div
+                        className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-500/40 bg-brand-500/15 px-4 py-1.5 shadow-glow-red"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        <span className="h-2 w-2 rounded-full bg-brand-400" />
+                        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-300 font-oswald">
+                          Featured Mission
+                        </span>
+                      </motion.div>
+
+                      {/* Title */}
+                      <motion.h2
+                        id={`dialog-title-${index}`}
+                        className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl font-marvel drop-shadow-[0_3px_16px_rgba(255,9,9,0.8)]"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        <span className="bg-gradient-to-r from-white via-brand-300 to-brand-500 bg-clip-text text-transparent">
+                          {project.title}
+                        </span>
+                      </motion.h2>
+
+                      {/* Description */}
+                      <motion.p
+                        className="mb-8 text-lg leading-relaxed text-slate-200 font-sans"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                      >
+                        {project.description}
+                      </motion.p>
+
+                      {/* Tech Stack */}
+                      <motion.div
+                        className="mb-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.7 }}
+                      >
+                        <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                          Technologies Used
+                        </h3>
+                        <div className="flex flex-wrap gap-3">
+                          {project.stack.map((tag, tagIndex) => (
+                            <motion.span
+                              key={tag}
+                              className="rounded-lg border border-brand-500/40 bg-gradient-to-r from-black/70 via-slate-900/80 to-black/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-slate-100 backdrop-blur-sm"
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ delay: 0.8 + tagIndex * 0.05 }}
+                              whileHover={{
+                                scale: 1.05,
+                                borderColor: "rgba(99, 102, 241, 0.5)",
+                                color: "#a5b4fc",
+                              }}
+                            >
+                              {tag}
+                            </motion.span>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Action Button */}
+                      <motion.div
+                        className="flex flex-wrap items-center gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.9 }}
+                      >
+                        <motion.a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group/btn flex items-center gap-3 rounded-xl bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-xl shadow-glow-red transition-all hover:shadow-2xl"
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <span>View Live Mission</span>
+                          <FiArrowUpRight size={20} />
+                        </motion.a>
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Accent Line */}
                   <motion.div
-                    className="flex flex-wrap items-center gap-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.9 }}
-                  >
-                    <motion.a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="group/btn flex items-center gap-3 rounded-xl bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-xl shadow-glow-red transition-all hover:shadow-2xl"
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span>View Live Mission</span>
-                      <FiArrowUpRight size={20} />
-                    </motion.a>
-                  </motion.div>
-                </div>
+                    className="absolute bottom-0 left-0 right-0 h-1 origin-left bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 1, delay: 1 }}
+                  />
+                </motion.div>
               </div>
-
-              {/* Bottom Accent Line */}
-              <motion.div
-                className="absolute bottom-0 left-0 right-0 h-1 origin-left bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 1, delay: 1 }}
-              />
-            </motion.div>
-          </>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </>
   );
 };

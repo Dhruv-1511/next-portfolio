@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
+import { memo } from "react";
 
-const SectionHeading = ({ eyebrow, title, subtitle }) => (
+const SectionHeading = memo(({ eyebrow, title, subtitle }) => (
   <motion.div
     initial={{ opacity: 0, y: 24 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -30,6 +31,8 @@ const SectionHeading = ({ eyebrow, title, subtitle }) => (
     {/* Decorative Line */}
     <div className="mx-auto mt-6 h-1 w-24 bg-gradient-to-r from-transparent via-marvel-red to-transparent opacity-50" />
   </motion.div>
-);
+));
+
+SectionHeading.displayName = "SectionHeading";
 
 export default SectionHeading;

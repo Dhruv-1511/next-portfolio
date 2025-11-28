@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useCallback, useMemo } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   FiMail,
@@ -13,7 +13,7 @@ import {
 import SectionHeading from "../components/SectionHeading";
 import { useContentfulData } from "../context/ContentfulContext";
 
-const InteractivePhoto = ({ personal }) => {
+const InteractivePhoto = memo(({ personal }) => {
   const [isMobile, setIsMobile] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -35,26 +35,41 @@ const InteractivePhoto = ({ personal }) => {
     damping: 30,
   });
 
-  const handleMouseMove = (event) => {
-    // Disable on mobile for performance
-    if (isMobile) return;
+  const handleMouseMove = useCallback(
+    (event) => {
+      // Disable on mobile for performance
+      if (isMobile) return;
 
-    const rect = event.currentTarget.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const mouseX = event.clientX - centerX;
-    const mouseY = event.clientY - centerY;
-    const normalizedX = mouseX / (rect.width / 2);
-    const normalizedY = mouseY / (rect.height / 2);
-    x.set(normalizedX);
-    y.set(normalizedY);
-  };
+      const rect = event.currentTarget.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const mouseX = event.clientX - centerX;
+      const mouseY = event.clientY - centerY;
+      const normalizedX = mouseX / (rect.width / 2);
+      const normalizedY = mouseY / (rect.height / 2);
+      x.set(normalizedX);
+      y.set(normalizedY);
+    },
+    [isMobile, x, y]
+  );
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     if (isMobile) return;
     x.set(0);
     y.set(0);
-  };
+  }, [isMobile, x, y]);
+
+  const photoStyle = useMemo(
+    () =>
+      isMobile
+        ? {}
+        : {
+            rotateX,
+            rotateY,
+            transformStyle: "preserve-3d",
+          },
+    [isMobile, rotateX, rotateY]
+  );
 
   if (!personal) return null;
 
@@ -63,15 +78,7 @@ const InteractivePhoto = ({ personal }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className="relative"
-      style={
-        isMobile
-          ? {}
-          : {
-              rotateX,
-              rotateY,
-              transformStyle: "preserve-3d",
-            }
-      }
+      style={photoStyle}
     >
       <div className="relative overflow-hidden rounded-3xl border border-red-900/30 bg-black p-4 shadow-[0_0_30px_rgba(255,0,0,0.1)]">
         {/* Photo Container */}
@@ -88,6 +95,7 @@ const InteractivePhoto = ({ personal }) => {
             loading="lazy"
             decoding="async"
             className="h-full w-full object-cover sepia-[.4] hover:sepia-0 transition-all duration-500"
+            style={{ willChange: isMobile ? "auto" : "transform" }}
             animate={isMobile ? {} : { scale: [1, 1.05, 1] }}
             transition={{
               duration: 8,
@@ -129,9 +137,11 @@ const InteractivePhoto = ({ personal }) => {
       </div>
     </motion.div>
   );
-};
+});
 
-const StoryCard = ({ title, content, icon: Icon, index, gradient }) => {
+InteractivePhoto.displayName = "InteractivePhoto";
+
+const StoryCard = memo(({ title, content, icon: Icon, index, gradient }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -175,45 +185,53 @@ const StoryCard = ({ title, content, icon: Icon, index, gradient }) => {
       />
     </motion.div>
   );
-};
+});
 
-const About = () => {
+StoryCard.displayName = "StoryCard";
+
+const About = memo(() => {
   const { content } = useContentfulData();
   const { personal } = content;
+
+  const storyCards = useMemo(
+    () =>
+      personal
+        ? [
+            {
+              title: "My Journey",
+              content: personal.summary,
+              icon: FiHeart,
+              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
+            },
+            {
+              title: "Design Philosophy",
+              content:
+                "Human-centered decisions, inclusive interactions, and purposeful visuals that make interfaces memorable and accessible.",
+              icon: FiTarget,
+              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
+            },
+            {
+              title: "Motion & Animation",
+              content:
+                "Micro-interactions, tactile motion language, and cinematic storytelling that flows with intent and delight.",
+              icon: FiZap,
+              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
+            },
+            {
+              title: "Code & Performance",
+              content:
+                "Ship resilient architectures, lighthouse-friendly experiences, and scalable code ecosystems that grow with teams.",
+              icon: FiCode,
+              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
+            },
+          ]
+        : [],
+    [personal]
+  );
 
   if (!personal) {
     return null;
   }
-
-  const storyCards = [
-    {
-      title: "My Journey",
-      content: personal.summary,
-      icon: FiHeart,
-      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-    },
-    {
-      title: "Design Philosophy",
-      content:
-        "Human-centered decisions, inclusive interactions, and purposeful visuals that make interfaces memorable and accessible.",
-      icon: FiTarget,
-      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-    },
-    {
-      title: "Motion & Animation",
-      content:
-        "Micro-interactions, tactile motion language, and cinematic storytelling that flows with intent and delight.",
-      icon: FiZap,
-      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-    },
-    {
-      title: "Code & Performance",
-      content:
-        "Ship resilient architectures, lighthouse-friendly experiences, and scalable code ecosystems that grow with teams.",
-      icon: FiCode,
-      gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-    },
-  ];
 
   return (
     <section id="about" className="relative scroll-mt-24 overflow-hidden">
@@ -308,7 +326,10 @@ const About = () => {
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
           <motion.div
             className="absolute right-0 top-1/4 h-96 w-96 rounded-full blur-3xl opacity-10"
-            style={{ background: "rgba(255, 9, 9, 0.4)" }}
+            style={{
+              background: "rgba(255, 9, 9, 0.4)",
+              willChange: "transform",
+            }}
             animate={{
               scale: [1, 1.2, 1],
               x: [0, 30, 0],
@@ -320,24 +341,12 @@ const About = () => {
               ease: "easeInOut",
             }}
           />
-          {/* <motion.div
-            className="absolute left-0 bottom-1/4 h-80 w-80 rounded-full blur-3xl opacity-8"
-            style={{ background: "rgba(100, 100, 100, 0.4)" }}
-            animate={{
-              scale: [1, 1.3, 1],
-              x: [0, -25, 0],
-              y: [0, 25, 0],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          /> */}
         </div>
       </div>
     </section>
   );
-};
+});
+
+About.displayName = "About";
 
 export default About;

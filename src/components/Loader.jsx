@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { motion } from "framer-motion";
 import bg1 from "../assets/bg3.webp";
 import ParticlesBackground from "./ParticlesBackground";
 
-const Loader = ({ onComplete }) => {
+const Loader = memo(({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -107,6 +107,8 @@ const Loader = ({ onComplete }) => {
       </motion.div>
     </div>
   );
-};
+});
+
+Loader.displayName = "Loader";
 
 export default Loader;

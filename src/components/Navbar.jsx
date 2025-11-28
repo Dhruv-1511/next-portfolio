@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef, memo } from "react";
 import {
   motion,
   AnimatePresence,
   useScroll,
   useSpring,
-  useMotionValue,
   useTransform,
-  useAnimation,
 } from "framer-motion";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
 
@@ -20,11 +18,13 @@ const navLinks = [
   { id: "contact", label: "Contact" },
 ];
 
-const Navbar = () => {
+const Navbar = memo(() => {
   const [active, setActive] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const logoControls = useAnimation();
+  const observerRef = useRef(null);
+  const visibleSectionsRef = useRef(new Map());
   const { scrollYProgress } = useScroll();
+
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -34,30 +34,65 @@ const Navbar = () => {
   const headerBlur = useTransform(scrollYProgress, [0, 0.1], [0, 24]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    // Disconnect previous observer if it exists
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActive(entry.target.id);
+            // Store the intersection ratio for each visible section
+            visibleSectionsRef.current.set(
+              entry.target.id,
+              entry.intersectionRatio
+            );
+          } else {
+            // Remove sections that are no longer visible
+            visibleSectionsRef.current.delete(entry.target.id);
           }
         });
+
+        // Find the most visible section (highest intersection ratio)
+        if (visibleSectionsRef.current.size > 0) {
+          let maxRatio = 0;
+          let mostVisibleSection = "";
+
+          visibleSectionsRef.current.forEach((ratio, id) => {
+            if (ratio > maxRatio) {
+              maxRatio = ratio;
+              mostVisibleSection = id;
+            }
+          });
+
+          if (mostVisibleSection) {
+            setActive(mostVisibleSection);
+          }
+        }
       },
       {
-        threshold: 0.3,
+        threshold: [0, 0.25, 0.5, 0.75, 1.0],
+        rootMargin: "-100px 0px -66% 0px",
       }
     );
 
     navLinks.forEach((link) => {
       const element = document.getElementById(link.id);
       if (element) {
-        observer.observe(element);
+        observerRef.current.observe(element);
       }
     });
 
-    return () => observer.disconnect();
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+      visibleSectionsRef.current.clear();
+    };
   }, []);
 
-  const handleLinkClick = (id) => {
+  const handleLinkClick = useCallback((id) => {
     // Ensure body overflow is not hidden (in case project cards or other components set it)
     document.body.style.overflow = "unset";
 
@@ -86,7 +121,7 @@ const Navbar = () => {
         });
       }
     });
-  };
+  }, []);
 
   const navVariants = useMemo(
     () => ({
@@ -269,6 +304,8 @@ const Navbar = () => {
       </motion.header>
     </>
   );
-};
+});
+
+Navbar.displayName = "Navbar";
 
 export default Navbar;

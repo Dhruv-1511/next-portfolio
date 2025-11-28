@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Rubik+Glitch&display=swap");
+/* Optimized font loading with font-display swap for better performance */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Rubik+Glitch&display=swap&font-display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -40,6 +41,22 @@ body {
 /* Optimize images */
 img {
   content-visibility: auto;
+  /* Optimize image rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Use contain for better performance */
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
+/* Optimize canvas elements */
+canvas {
+  /* Force GPU acceleration for canvas */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 /* Reduce animations on mobile and low-end devices */
@@ -274,7 +291,8 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #ff0909;
+  box-shadow: 0 0 10px #ff0909;
   border-radius: 4px;
 }
 

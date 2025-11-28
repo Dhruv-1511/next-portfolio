@@ -1,38 +1,41 @@
 import { motion } from "framer-motion";
-import { FaFigma, FaGithub, FaReact } from "react-icons/fa";
+import { memo, useMemo, useCallback } from "react";
+import { FaGithub, FaReact } from "react-icons/fa";
 import { SiFramer, SiJavascript, SiTailwindcss } from "react-icons/si";
 import { RiNextjsFill } from "react-icons/ri";
 import PrimaryButton from "../components/PrimaryButton";
-import ParallaxShapes from "../components/ParallaxShapes";
 import ProfileCard from "../components/ProfileCard";
 import ScrambledText from "../components/ScrambledText";
 import { useContentfulData } from "../context/ContentfulContext";
 
 const floatingIcons = [
-  { icon: <FaReact />, color: "text-red-500", delay: 0 },
-  { icon: <RiNextjsFill />, color: "text-white", delay: 0.1 },
-  { icon: <SiTailwindcss />, color: "text-blue-500", delay: 0.3 }, // Keep blue for contrast but darker
-  { icon: <SiFramer />, color: "text-red-400", delay: 0.5 },
-  { icon: <SiJavascript />, color: "text-yellow-500", delay: 0.7 },
-  { icon: <FaGithub />, color: "text-gray-400", delay: 0.9 },
+  { icon: FaReact, color: "text-red-500", delay: 0 },
+  { icon: RiNextjsFill, color: "text-white", delay: 0.1 },
+  { icon: SiTailwindcss, color: "text-blue-500", delay: 0.3 },
+  { icon: SiFramer, color: "text-red-400", delay: 0.5 },
+  { icon: SiJavascript, color: "text-yellow-500", delay: 0.7 },
+  { icon: FaGithub, color: "text-gray-400", delay: 0.9 },
 ];
 
-const Hero = () => {
+const Hero = memo(() => {
   const { content } = useContentfulData();
   const { personal, heroCtas } = content;
 
-  if (!personal || !heroCtas || heroCtas.length === 0) {
-    return null;
-  }
+  const greeting = useMemo(
+    () => (personal ? `I  AM  ${personal.name.toUpperCase()}` : ""),
+    [personal]
+  );
 
-  const greeting = `I  AM  ${personal.name.toUpperCase()}`;
-
-  const handleContactClick = () => {  
+  const handleContactClick = useCallback(() => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }, []);
+
+  if (!personal || !heroCtas || heroCtas.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -156,32 +159,38 @@ const Hero = () => {
           </div>
 
           <div className="pointer-events-none absolute inset-0">
-            {floatingIcons.map((item, index) => (
-              <motion.div
-                key={index}
-                className={`absolute flex h-16 w-16 items-center justify-center rounded-full border border-red-900/50 bg-black/80 backdrop-blur-md text-3xl ${item.color} shadow-[0_0_15px_rgba(255,0,0,0.2)]`}
-                style={{
-                  top: `${1 + index * 15}%`,
-                  right: index % 2 === 0 ? "-12%" : "auto",
-                  left: index % 2 !== 0 ? "-12%" : "auto",
-                }}
-                initial={{ y: 0 }}
-                animate={{ y: [-20, 20, -20], rotate: [0, 10, -10, 0] }}
-                transition={{
-                  delay: item.delay,
-                  duration: 5 + index,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              >
-                {item.icon}
-              </motion.div>
-            ))}
+            {floatingIcons.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={index}
+                  className={`absolute flex h-16 w-16 items-center justify-center rounded-full border border-red-900/50 bg-black/80 backdrop-blur-md text-3xl ${item.color} shadow-[0_0_15px_rgba(255,0,0,0.2)]`}
+                  style={{
+                    top: `${1 + index * 15}%`,
+                    right: index % 2 === 0 ? "-12%" : "auto",
+                    left: index % 2 !== 0 ? "-12%" : "auto",
+                    willChange: "transform",
+                  }}
+                  initial={{ y: 0 }}
+                  animate={{ y: [-20, 20, -20], rotate: [0, 10, -10, 0] }}
+                  transition={{
+                    delay: item.delay,
+                    duration: 5 + index,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <Icon />
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </div>
     </section>
   );
-};
+});
+
+Hero.displayName = "Hero";
 
 export default Hero;
