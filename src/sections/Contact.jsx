@@ -197,11 +197,19 @@ const Contact = () => {
               <span
                 className={`relative z-10 transition-all duration-300 ${
                   isLoading
-                    ? "text-stone-500"
+                    ? "text-red-500"
                     : "text-red-500 group-hover:text-white drop-shadow-[0_0_8px_rgba(255,0,0,1)] group-hover:drop-shadow-[0_0_15px_rgba(255,0,0,1)]"
                 }`}
+                style={
+                  isLoading
+                    ? {
+                        textShadow:
+                          "0 0 8px rgba(255, 0, 0, 0.8), 0 0 15px rgba(255, 0, 0, 0.6), 0 0 25px rgba(255, 0, 0, 0.4), 0 0 35px rgba(255, 0, 0, 0.3)",
+                      }
+                    : {}
+                }
               >
-                {isLoading ? "Sending..." : "Send Message"}
+                {isLoading ? "Sending" : "Send Message"}
               </span>
 
               {/* Vine/Tendril Animations - Hyper-realistic twisted woody vines */}
@@ -236,6 +244,31 @@ const Contact = () => {
                       floodOpacity="0.5"
                     />
                   </filter>
+                  <filter
+                    id="greenGlow"
+                    x="-50%"
+                    y="-50%"
+                    width="200%"
+                    height="200%"
+                  >
+                    <feGaussianBlur
+                      in="SourceGraphic"
+                      stdDeviation="3"
+                      result="blur"
+                    />
+                    <feColorMatrix
+                      in="blur"
+                      type="matrix"
+                      values="0 0 0 0 0.133
+                                                                     0 0 0 0 0.773
+                                                                     0 0 0 0 0.369
+                                                                     0 0 0 0.8 0"
+                    />
+                    <feMerge>
+                      <feMergeNode in="SourceGraphic" />
+                      <feMergeNode />
+                    </feMerge>
+                  </filter>
                   <linearGradient
                     id="woodGrad2"
                     x1="0%"
@@ -249,9 +282,22 @@ const Contact = () => {
                   </linearGradient>
                 </defs>
 
+                {/* Main twisted vine - Green glow layer */}
+                <motion.path
+                  d="M16,12 C40,20 32,44 56,52 C72,64 68,76 88,84 C104,88 120,92 136,96 C152,100 168,104 184,108"
+                  stroke="#22c55e"
+                  strokeWidth="6.4"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut" }}
+                />
                 {/* Main twisted vine */}
                 <motion.path
-                  d="M16,12 C40,20 32,44 56,52 C72,64 68,76 88,84"
+                  d="M16,12 C40,20 32,44 56,52 C72,64 68,76 88,84 C104,88 120,92 136,96 C152,100 168,104 184,108"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -262,9 +308,22 @@ const Contact = () => {
                   transition={{ duration: 2.5, ease: "easeInOut" }}
                 />
 
+                {/* Secondary twisted vine - Green glow layer */}
+                <motion.path
+                  d="M24,8 C32,28 20,52 44,68 C60,76 68,68 76,84 C88,88 100,92 112,96 C124,100 136,104 148,108"
+                  stroke="#22c55e"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.3 }}
+                />
                 {/* Secondary twisted vine */}
                 <motion.path
-                  d="M24,8 C32,28 20,52 44,68 C60,76 68,68 76,84"
+                  d="M24,8 C32,28 20,52 44,68 C60,76 68,68 76,84 C88,88 100,92 112,96 C124,100 136,104 148,108"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
@@ -310,8 +369,48 @@ const Contact = () => {
                 }}
                 transition={{ duration: 0.5 }}
               >
+                <defs>
+                  <filter
+                    id="greenGlow2"
+                    x="-50%"
+                    y="-50%"
+                    width="200%"
+                    height="200%"
+                  >
+                    <feGaussianBlur
+                      in="SourceGraphic"
+                      stdDeviation="3"
+                      result="blur"
+                    />
+                    <feColorMatrix
+                      in="blur"
+                      type="matrix"
+                      values="0 0 0 0 0.133
+                                                                     0 0 0 0 0.773
+                                                                     0 0 0 0 0.369
+                                                                     0 0 0 0.8 0"
+                    />
+                    <feMerge>
+                      <feMergeNode in="SourceGraphic" />
+                      <feMergeNode />
+                    </feMerge>
+                  </filter>
+                </defs>
+                {/* Main vine - Green glow layer */}
                 <motion.path
-                  d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84"
+                  d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84 C56,88 40,92 24,96 C8,100 0,104 0,108"
+                  stroke="#22c55e"
+                  strokeWidth="6.4"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow2)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
+                />
+                <motion.path
+                  d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84 C56,88 40,92 24,96 C8,100 0,104 0,108"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -321,8 +420,21 @@ const Contact = () => {
                   animate={{ pathLength: isLoading ? 1 : 0 }}
                   transition={{ duration: 2.5, ease: "easeInOut", delay: 0.2 }}
                 />
+                {/* Secondary vine - Green glow layer */}
                 <motion.path
-                  d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84"
+                  d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84 C68,88 56,92 44,96 C32,100 20,104 8,108"
+                  stroke="#22c55e"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow2)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.5 }}
+                />
+                <motion.path
+                  d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84 C68,88 56,92 44,96 C32,100 20,104 8,108"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
@@ -364,8 +476,48 @@ const Contact = () => {
                 }}
                 transition={{ duration: 0.5 }}
               >
+                <defs>
+                  <filter
+                    id="greenGlow3"
+                    x="-50%"
+                    y="-50%"
+                    width="200%"
+                    height="200%"
+                  >
+                    <feGaussianBlur
+                      in="SourceGraphic"
+                      stdDeviation="3"
+                      result="blur"
+                    />
+                    <feColorMatrix
+                      in="blur"
+                      type="matrix"
+                      values="0 0 0 0 0.133
+                                                                     0 0 0 0 0.773
+                                                                     0 0 0 0 0.369
+                                                                     0 0 0 0.8 0"
+                    />
+                    <feMerge>
+                      <feMergeNode in="SourceGraphic" />
+                      <feMergeNode />
+                    </feMerge>
+                  </filter>
+                </defs>
+                {/* Main vine - Green glow layer */}
                 <motion.path
-                  d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116"
+                  d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116 C104,112 120,108 136,104 C152,100 168,96 184,92"
+                  stroke="#22c55e"
+                  strokeWidth="6.4"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow3)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.4 }}
+                />
+                <motion.path
+                  d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116 C104,112 120,108 136,104 C152,100 168,96 184,92"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -375,8 +527,21 @@ const Contact = () => {
                   animate={{ pathLength: isLoading ? 1 : 0 }}
                   transition={{ duration: 2.5, ease: "easeInOut", delay: 0.4 }}
                 />
+                {/* Secondary vine - Green glow layer */}
                 <motion.path
-                  d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112"
+                  d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112 C88,108 100,104 112,100 C124,96 136,92 148,88"
+                  stroke="#22c55e"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow3)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.7 }}
+                />
+                <motion.path
+                  d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112 C88,108 100,104 112,100 C124,96 136,92 148,88"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
@@ -409,8 +574,48 @@ const Contact = () => {
                 }}
                 transition={{ duration: 0.5 }}
               >
+                <defs>
+                  <filter
+                    id="greenGlow4"
+                    x="-50%"
+                    y="-50%"
+                    width="200%"
+                    height="200%"
+                  >
+                    <feGaussianBlur
+                      in="SourceGraphic"
+                      stdDeviation="3"
+                      result="blur"
+                    />
+                    <feColorMatrix
+                      in="blur"
+                      type="matrix"
+                      values="0 0 0 0 0.133
+                                                                     0 0 0 0 0.773
+                                                                     0 0 0 0 0.369
+                                                                     0 0 0 0.8 0"
+                    />
+                    <feMerge>
+                      <feMergeNode in="SourceGraphic" />
+                      <feMergeNode />
+                    </feMerge>
+                  </filter>
+                </defs>
+                {/* Main vine - Green glow layer */}
                 <motion.path
-                  d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116"
+                  d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116 C56,112 40,108 24,104 C8,100 0,96 0,92"
+                  stroke="#22c55e"
+                  strokeWidth="6.4"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow4)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }}
+                />
+                <motion.path
+                  d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116 C56,112 40,108 24,104 C8,100 0,96 0,92"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -420,8 +625,21 @@ const Contact = () => {
                   animate={{ pathLength: isLoading ? 1 : 0 }}
                   transition={{ duration: 2.5, ease: "easeInOut", delay: 0.6 }}
                 />
+                {/* Secondary vine - Green glow layer */}
                 <motion.path
-                  d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112"
+                  d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112 C68,108 56,104 44,100 C32,96 20,92 8,88"
+                  stroke="#22c55e"
+                  strokeWidth="4.8"
+                  fill="none"
+                  strokeLinecap="round"
+                  filter="url(#greenGlow4)"
+                  opacity="0.6"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: isLoading ? 1 : 0 }}
+                  transition={{ duration: 2.2, ease: "easeInOut", delay: 0.9 }}
+                />
+                <motion.path
+                  d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112 C68,108 56,104 44,100 C32,96 20,92 8,88"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
