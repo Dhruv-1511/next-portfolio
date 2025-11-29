@@ -149,7 +149,7 @@ const Contact = () => {
                 scale: isLoading ? 1 : 1.05,
               }}
               whileTap={{ scale: isLoading ? 1 : 0.95 }}
-              className={`group relative mt-8 flex items-center justify-center gap-2 rounded-lg px-10 py-4 text-sm font-bold uppercase tracking-[0.5em] transition-all duration-500 font-serif max-w-[272px] w-full ${
+              className={`group relative mt-8 flex items-center justify-center gap-2 rounded-lg px-6 sm:px-10 py-4 text-sm font-bold uppercase tracking-[0.5em] transition-all duration-500 font-serif max-w-[272px] w-full ${
                 isLoading ? "cursor-not-allowed" : ""
               }`}
               style={{
@@ -284,7 +284,7 @@ const Contact = () => {
 
                 {/* Main twisted vine - Green glow layer */}
                 <motion.path
-                  d="M16,12 C40,20 32,44 56,52 C72,64 68,76 88,84 C104,88 120,92 136,96 C152,100 168,104 184,108"
+                  d="M12,10 C32,-2 26,40 54,32 C82,26 60,82 92,74 C120,70 126,104 150,98 C174,92 178,114 188,106"
                   stroke="#22c55e"
                   strokeWidth="6.4"
                   fill="none"
@@ -297,7 +297,7 @@ const Contact = () => {
                 />
                 {/* Main twisted vine */}
                 <motion.path
-                  d="M16,12 C40,20 32,44 56,52 C72,64 68,76 88,84 C104,88 120,92 136,96 C152,100 168,104 184,108"
+                  d="M12,10 C32,-2 26,40 54,32 C82,26 60,82 92,74 C120,70 126,104 150,98 C174,92 178,114 188,106"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -310,7 +310,7 @@ const Contact = () => {
 
                 {/* Secondary twisted vine - Green glow layer */}
                 <motion.path
-                  d="M24,8 C32,28 20,52 44,68 C60,76 68,68 76,84 C88,88 100,92 112,96 C124,100 136,104 148,108"
+                  d="M20,8 C30,30 14,54 40,70 C62,80 72,64 80,86 C92,94 104,94 118,98 C132,102 146,108 154,112"
                   stroke="#22c55e"
                   strokeWidth="4.8"
                   fill="none"
@@ -323,7 +323,7 @@ const Contact = () => {
                 />
                 {/* Secondary twisted vine */}
                 <motion.path
-                  d="M24,8 C32,28 20,52 44,68 C60,76 68,68 76,84 C88,88 100,92 112,96 C124,100 136,104 148,108"
+                  d="M20,8 C30,30 14,54 40,70 C62,80 72,64 80,86 C92,94 104,94 118,98 C132,102 146,108 154,112"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
@@ -398,7 +398,7 @@ const Contact = () => {
                 </defs>
                 {/* Main vine - Green glow layer */}
                 <motion.path
-                  d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84 C56,88 40,92 24,96 C8,100 0,104 0,108"
+                  d="M148,10 C124,0 132,40 110,30 C92,24 106,82 80,76 C56,72 40,100 24,96 C12,94 8,110 10,114"
                   stroke="#22c55e"
                   strokeWidth="6.4"
                   fill="none"
@@ -410,7 +410,7 @@ const Contact = () => {
                   transition={{ duration: 1.25, ease: "easeInOut", delay: 0.1 }}
                 />
                 <motion.path
-                  d="M144,12 C120,20 128,44 104,52 C88,64 96,76 72,84 C56,88 40,92 24,96 C8,100 0,104 0,108"
+                  d="M148,10 C124,0 132,40 110,30 C92,24 106,82 80,76 C56,72 40,100 24,96 C12,94 8,110 10,114"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -422,7 +422,7 @@ const Contact = () => {
                 />
                 {/* Secondary vine - Green glow layer */}
                 <motion.path
-                  d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84 C68,88 56,92 44,96 C32,100 20,104 8,108"
+                  d="M140,8 C132,30 148,54 120,70 C98,80 90,64 82,86 C70,94 58,96 44,100 C32,104 22,110 14,112"
                   stroke="#22c55e"
                   strokeWidth="4.8"
                   fill="none"
@@ -434,7 +434,7 @@ const Contact = () => {
                   transition={{ duration: 1.1, ease: "easeInOut", delay: 0.25 }}
                 />
                 <motion.path
-                  d="M136,8 C128,28 144,52 112,68 C96,76 88,68 80,84 C68,88 56,92 44,96 C32,100 20,104 8,108"
+                  d="M140,8 C132,30 148,54 120,70 C98,80 90,64 82,86 C70,94 58,96 44,100 C32,104 22,110 14,112"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
@@ -505,7 +505,7 @@ const Contact = () => {
                 </defs>
                 {/* Main vine - Green glow layer */}
                 <motion.path
-                  d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116 C104,112 120,108 136,104 C152,100 168,96 184,92"
+                  d="M12,190 C34,200 26,158 54,166 C80,172 60,118 92,126 C118,132 124,98 148,104 C170,110 176,90 188,96"
                   stroke="#22c55e"
                   strokeWidth="6.4"
                   fill="none"
@@ -517,7 +517,7 @@ const Contact = () => {
                   transition={{ duration: 1.25, ease: "easeInOut", delay: 0.2 }}
                 />
                 <motion.path
-                  d="M16,188 C40,180 32,156 56,148 C72,136 68,124 88,116 C104,112 120,108 136,104 C152,100 168,96 184,92"
+                  d="M12,190 C34,200 26,158 54,166 C80,172 60,118 92,126 C118,132 124,98 148,104 C170,110 176,90 188,96"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -529,7 +529,7 @@ const Contact = () => {
                 />
                 {/* Secondary vine - Green glow layer */}
                 <motion.path
-                  d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112 C88,108 100,104 112,100 C124,96 136,92 148,88"
+                  d="M20,192 C30,170 16,146 44,130 C70,118 70,142 82,118 C90,106 104,104 118,100 C132,96 144,92 154,88"
                   stroke="#22c55e"
                   strokeWidth="4.8"
                   fill="none"
@@ -541,7 +541,7 @@ const Contact = () => {
                   transition={{ duration: 1.1, ease: "easeInOut", delay: 0.35 }}
                 />
                 <motion.path
-                  d="M24,192 C32,172 16,148 48,132 C64,124 72,132 80,112 C88,108 100,104 112,100 C124,96 136,92 148,88"
+                  d="M20,192 C30,170 16,146 44,130 C70,118 70,142 82,118 C90,106 104,104 118,100 C132,96 144,92 154,88"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
@@ -603,7 +603,7 @@ const Contact = () => {
                 </defs>
                 {/* Main vine - Green glow layer */}
                 <motion.path
-                  d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116 C56,112 40,108 24,104 C8,100 0,96 0,92"
+                  d="M148,190 C124,200 132,158 106,166 C84,172 102,118 76,126 C52,132 40,98 22,104 C10,108 8,96 10,90"
                   stroke="#22c55e"
                   strokeWidth="6.4"
                   fill="none"
@@ -615,7 +615,7 @@ const Contact = () => {
                   transition={{ duration: 1.25, ease: "easeInOut", delay: 0.3 }}
                 />
                 <motion.path
-                  d="M144,188 C120,180 128,156 104,148 C88,136 96,124 72,116 C56,112 40,108 24,104 C8,100 0,96 0,92"
+                  d="M148,190 C124,200 132,158 106,166 C84,172 102,118 76,126 C52,132 40,98 22,104 C10,108 8,96 10,90"
                   stroke="url(#woodGrad2)"
                   strokeWidth="4.8"
                   fill="none"
@@ -627,7 +627,7 @@ const Contact = () => {
                 />
                 {/* Secondary vine - Green glow layer */}
                 <motion.path
-                  d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112 C68,108 56,104 44,100 C32,96 20,92 8,88"
+                  d="M140,192 C132,170 146,146 118,130 C96,118 90,142 82,118 C72,108 58,104 44,100 C32,96 22,92 14,90"
                   stroke="#22c55e"
                   strokeWidth="4.8"
                   fill="none"
@@ -639,7 +639,7 @@ const Contact = () => {
                   transition={{ duration: 1.1, ease: "easeInOut", delay: 0.45 }}
                 />
                 <motion.path
-                  d="M136,192 C128,172 144,148 112,132 C96,124 88,132 80,112 C68,108 56,104 44,100 C32,96 20,92 8,88"
+                  d="M140,192 C132,170 146,146 118,130 C96,118 90,142 82,118 C72,108 58,104 44,100 C32,96 22,92 14,90"
                   stroke="url(#woodGrad2)"
                   strokeWidth="3.2"
                   fill="none"
