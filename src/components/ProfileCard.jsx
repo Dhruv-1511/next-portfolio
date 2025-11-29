@@ -142,13 +142,13 @@ const ProfileCard = memo(
               style={{ transform: "translateZ(20px)" }}
             >
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-white font-serif uppercase tracking-wide">
+                <p className="text-2xl font-bold text-white font-serif uppercase tracking-wide">
                   {name}
-                </h3>
+                </p>
                 <p className="mt-1 text-sm text-red-500 font-mono uppercase">
                   {title}
                 </p>
-                <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-500">
+                <p className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-300">
                   SUBJECT: 011
                 </p>
               </div>

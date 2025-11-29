@@ -171,7 +171,7 @@ const StoryCard = memo(({ title, content, icon: Icon, index, gradient }) => {
           >
             <Icon className="text-xl text-red-500" />
           </motion.div>
-          <h4 className="text-lg font-bold text-white font-serif">{title}</h4>
+          <p className="text-lg font-bold text-white font-serif">{title}</p>
         </div>
         <p className="text-sm leading-relaxed text-gray-400 font-mono">
           {content}

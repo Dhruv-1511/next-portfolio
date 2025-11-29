@@ -2,53 +2,41 @@ import { useRef, useEffect, useState, memo } from "react";
 
 const BackgroundMusic = memo(() => {
   const audioRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const interactionHandlersRef = useRef(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   // Initialize audio and attempt autoplay
   useEffect(() => {
-    // Detect mobile - disable audio on mobile for performance
-    const mobile =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        navigator.userAgent
-      );
-    setIsMobile(mobile);
-
-    if (mobile || !audioRef.current) return; // Skip audio on mobile
+    if (!audioRef.current) return;
 
     const audio = audioRef.current;
 
     // Set volume to 30%
     audio.volume = 0.3;
 
-    // Try to play immediately (may be blocked by browser)
-    const attemptAutoplay = async () => {
+    const tryPlay = async () => {
+      if (!audio || !audio.paused) return;
       try {
         await audio.play();
       } catch (error) {
-        // Autoplay was prevented - will try on user interaction
-        console.log("Autoplay prevented, waiting for user interaction");
+        console.log(
+          "Autoplay prevented, will retry on interaction/visibility",
+          error
+        );
       }
     };
+
+    // Try to play immediately (may work on desktop if user has allowed sound)
+    tryPlay();
+
+    // Try again when enough data is loaded
+    audio.addEventListener("loadeddata", tryPlay, { once: true });
 
     // Also try on first user interaction (most reliable)
-    const handleFirstInteraction = async () => {
-      if (audio && audio.paused) {
-        try {
-          await audio.play();
-        } catch (error) {
-          console.error("Error playing audio:", error);
-        }
-      }
+    const handleFirstInteraction = () => {
+      setHasInteracted(true);
+      tryPlay();
     };
 
-    // Store handlers in ref to avoid recreating them
-    interactionHandlersRef.current = handleFirstInteraction;
-
-    // Try autoplay when audio is loaded
-    audio.addEventListener("loadeddata", attemptAutoplay, { once: true });
-
-    // Listen for first user interaction with passive listeners
     document.addEventListener("click", handleFirstInteraction, {
       once: true,
       passive: true,
@@ -62,21 +50,25 @@ const BackgroundMusic = memo(() => {
       passive: true,
     });
 
+    // Try when tab becomes visible again
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        tryPlay();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
     return () => {
-      audio.removeEventListener("loadeddata", attemptAutoplay);
+      audio.removeEventListener("loadeddata", tryPlay);
       document.removeEventListener("click", handleFirstInteraction);
       document.removeEventListener("keydown", handleFirstInteraction);
       document.removeEventListener("touchstart", handleFirstInteraction);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
-  // Don't render audio on mobile for performance
-  if (isMobile) {
-    return null;
-  }
-
   return (
-    <audio ref={audioRef} loop autoPlay preload="none">
+    <audio ref={audioRef} loop autoPlay preload="auto" playsInline>
       <source src="/bg-music.mp3" type="audio/mpeg" />
       <source src="/bg-music.ogg" type="audio/ogg" />
       Your browser does not support the audio element.
