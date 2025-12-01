@@ -287,7 +287,7 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
                       {/* Title */}
                       <motion.h2
                         id={`dialog-title-${index}`}
-                        className="mb-4 text-4xl font-bold leading-tight text-white md:text-5xl font-marvel drop-shadow-[0_3px_16px_rgba(255,9,9,0.8)]"
+                        className="mb-6 text-4xl font-bold leading-tight text-white md:text-5xl font-marvel drop-shadow-[0_3px_16px_rgba(255,9,9,0.8)]"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5 }}
@@ -296,6 +296,25 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
                           {project.title}
                         </span>
                       </motion.h2>
+
+                      <motion.div
+                        className="flex flex-wrap items-center gap-4 mb-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.9 }}
+                      >
+                        <motion.a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="group/btn flex items-center gap-3 rounded-xl bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow-red transition-all hover:shadow-2xl"
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <span>View Live Mission</span>
+                          <FiArrowUpRight size={20} />
+                        </motion.a>
+                      </motion.div>
 
                       {/* Description */}
                       <motion.p
@@ -309,7 +328,7 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
 
                       {/* Tech Stack */}
                       <motion.div
-                        className="mb-8"
+                        className=""
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7 }}
@@ -335,26 +354,6 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
                             </motion.span>
                           ))}
                         </div>
-                      </motion.div>
-
-                      {/* Action Button */}
-                      <motion.div
-                        className="flex flex-wrap items-center gap-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.9 }}
-                      >
-                        <motion.a
-                          href={project.demo}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="group/btn flex items-center gap-3 rounded-xl bg-gradient-to-r from-brand-500 via-brand-400 to-brand-300 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-glow-red transition-all hover:shadow-2xl"
-                          whileHover={{ scale: 1.05, y: -2 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <span>View Live Mission</span>
-                          <FiArrowUpRight size={20} />
-                        </motion.a>
                       </motion.div>
                     </div>
                   </div>

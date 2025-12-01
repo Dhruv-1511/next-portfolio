@@ -1,4 +1,3 @@
-/* Optimized font loading with font-display swap for better performance */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@700;900&family=Rubik+Glitch&display=swap&font-display=swap");
 
 @tailwind base;
@@ -23,65 +22,8 @@ body {
   overflow-x: hidden;
 }
 
-/* Performance optimizations */
-* {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* GPU acceleration for animations */
-.will-change-transform {
-  will-change: transform;
-}
-
-.will-change-opacity {
-  will-change: opacity;
-}
-
-/* Optimize images */
-img {
-  content-visibility: auto;
-  /* Optimize image rendering */
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-
-/* Use contain for better performance */
-section {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 500px;
-}
-
-/* Optimize canvas elements */
-canvas {
-  /* Force GPU acceleration for canvas */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-/* Reduce animations on mobile and low-end devices */
-@media (max-width: 768px) {
-  * {
-    animation-duration: 0.5s !important;
-    transition-duration: 0.3s !important;
-  }
-}
-
-/* Respect user's motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 ::selection {
   background: rgba(255, 9, 9, 0.5);
-  /* Neon Red */
   color: #ffffff;
 }
 
@@ -110,7 +52,6 @@ canvas {
   0% {
     background-position: 0% 0%;
   }
-
   100% {
     background-position: 100% 0%;
   }
@@ -125,7 +66,6 @@ canvas {
     rgba(20, 0, 0, 0.6)
   );
 }
-
 .glass-card2 {
   position: relative;
   @apply border border-red-900/30 backdrop-blur-md shadow-glow-red2;
@@ -233,23 +173,18 @@ canvas {
   0% {
     clip: rect(30px, 9999px, 10px, 0);
   }
-
   20% {
     clip: rect(80px, 9999px, 90px, 0);
   }
-
   40% {
     clip: rect(10px, 9999px, 50px, 0);
   }
-
   60% {
     clip: rect(40px, 9999px, 20px, 0);
   }
-
   80% {
     clip: rect(70px, 9999px, 60px, 0);
   }
-
   100% {
     clip: rect(20px, 9999px, 80px, 0);
   }
@@ -259,23 +194,18 @@ canvas {
   0% {
     clip: rect(10px, 9999px, 80px, 0);
   }
-
   20% {
     clip: rect(60px, 9999px, 10px, 0);
   }
-
   40% {
     clip: rect(90px, 9999px, 30px, 0);
   }
-
   60% {
     clip: rect(20px, 9999px, 70px, 0);
   }
-
   80% {
     clip: rect(50px, 9999px, 40px, 0);
   }
-
   100% {
     clip: rect(80px, 9999px, 20px, 0);
   }
@@ -299,4 +229,54 @@ canvas {
 ::-webkit-scrollbar-thumb:hover {
   background: #ff0909;
   box-shadow: 0 0 10px #ff0909;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* GPU acceleration for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Optimize images */
+img {
+  content-visibility: auto;
+  /* Optimize image rendering */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Optimize canvas elements */
+canvas {
+  /* Force GPU acceleration for canvas */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Reduce animations on mobile and low-end devices */
+@media (max-width: 768px) {
+  * {
+    animation-duration: 0.5s !important;
+    transition-duration: 0.3s !important;
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
