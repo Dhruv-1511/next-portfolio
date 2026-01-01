@@ -34,14 +34,14 @@ const Education = () => {
               }}
               className="group relative"
             >
-              <div className="card-3d glass-card relative h-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/80 via-slate-900/60 to-slate-950/80 p-8 shadow-2xl transition-all duration-500">
+              <div className="card-3d relative h-full overflow-hidden rounded-3xl border border-red-900/30 bg-gradient-to-br from-black via-zinc-950 to-red-950/30 p-8 shadow-2xl transition-all duration-500 hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(220,38,38,0.15)]">
                 {/* Animated background gradient */}
                 <motion.div
-                  className="absolute -right-20 -top-20 h-64 w-64 rounded-full blur-3xl opacity-40"
-                  style={{ background: item.accent }}
+                  className="absolute -right-20 -top-20 h-64 w-64 rounded-full blur-3xl opacity-20"
+                  style={{ background: "#ef4444" }}
                   animate={{
                     scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.5, 0.3],
+                    opacity: [0.1, 0.3, 0.1],
                   }}
                   transition={{
                     duration: 8,
@@ -53,27 +53,15 @@ const Education = () => {
                 {/* Top badge */}
                 <div className="relative mb-6 flex items-start justify-between">
                   <motion.div
-                    className="flex h-16 w-16 items-center justify-center rounded-2xl border-2 shadow-lg"
-                    style={{
-                      borderColor: `${item.accent}55`,
-                      background: `linear-gradient(135deg, ${item.accent}20, ${item.accent}05)`,
-                    }}
-                    whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+                    className="flex h-16 w-16 items-center justify-center rounded-2xl border border-red-500/30 bg-red-950/20 shadow-lg group-hover:bg-red-900/30 group-hover:border-red-500 transition-colors duration-300"
+                    whileHover={{ rotate: [0, -5, 5, -5, 0], scale: 1.1 }}
                     transition={{ duration: 0.5 }}
                   >
-                    <FaAward
-                      className="text-2xl"
-                      style={{ color: item.accent }}
-                    />
+                    <FaAward className="text-2xl text-red-500 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
                   </motion.div>
 
                   <motion.div
-                    className="rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.4em]"
-                    style={{
-                      color: item.accent,
-                      borderColor: `${item.accent}55`,
-                      backgroundColor: `${item.accent}15`,
-                    }}
+                    className="rounded-full border border-red-900/50 bg-red-950/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-red-400 group-hover:text-red-300 group-hover:border-red-500/50 transition-colors"
                     whileHover={{ scale: 1.05 }}
                   >
                     {item.duration}
@@ -86,10 +74,10 @@ const Education = () => {
                     <h3 className="text-2xl font-bold text-white md:text-3xl">
                       {item.degree}
                     </h3>
-                    <div className="mt-3 flex items-center gap-2 text-slate-300">
+                    <div className="mt-3 flex items-center gap-2 text-red-400">
                       <FaMapMarkerAlt
                         className="h-4 w-4"
-                        style={{ color: item.accent }}
+                        style={{ color: "#ef4444" }}
                       />
                       <span className="text-sm font-medium">
                         {item.institution}
@@ -97,7 +85,7 @@ const Education = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-400">
+                  <div className="flex items-center gap-3 text-xs text-slate-500">
                     <div className="flex items-center gap-1.5">
                       <FaCalendarAlt className="h-3.5 w-3.5" />
                       <span>{item.duration}</span>
@@ -111,7 +99,7 @@ const Education = () => {
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                   >
-                    <p className="text-sm leading-relaxed text-slate-300">
+                    <p className="text-sm leading-relaxed text-red-200">
                       {item.description}
                     </p>
                   </motion.div>
@@ -119,9 +107,9 @@ const Education = () => {
 
                 {/* Bottom accent line */}
                 <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-1 origin-left"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
                   style={{
-                    background: `linear-gradient(90deg, ${item.accent}, transparent)`,
+                    background: `linear-gradient(90deg, #dc2626, transparent)`,
                   }}
                   initial={{ scaleX: 0 }}
                   whileInView={{ scaleX: 1 }}
@@ -135,9 +123,9 @@ const Education = () => {
 
                 {/* Hover glow effect */}
                 <motion.div
-                  className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-15"
+                  className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-20"
                   style={{
-                    background: `radial-gradient(circle at center, ${item.accent}80, transparent)`,
+                    background: `radial-gradient(circle at center, rgba(220, 38, 38, 0.4), transparent)`,
                   }}
                 />
               </div>

@@ -66,13 +66,12 @@ const Hero = memo(() => {
                 delay: 0.4,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="relative text-5xl font-serif font-bold leading-none tracking-tighter text-white sm:text-7xl md:text-8xl drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]"
-              style={{ textShadow: "0 0 10px rgba(255, 9, 9, 0.5)" }}
+              className="relative text-5xl font-black leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-gray-400 sm:text-7xl md:text-8xl drop-shadow-[0_0_30px_rgba(255,255,255,0.3)]"
             >
               <ScrambledText
                 text={greeting}
-                duration={1000}
-                className="whitespace-pre-wrap text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 stroke-red-500"
+                duration={800}
+                className="whitespace-pre-wrap"
               />
             </motion.h1>
 
@@ -80,20 +79,22 @@ const Hero = memo(() => {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.7 }}
-              className="max-w-xl text-lg text-slate-300 font-sans tracking-wide border-l-2 border-red-800 pl-4"
+              className="max-w-xl text-lg text-zinc-300 font-light tracking-wide leading-relaxed border-l border-red-500/50 pl-6"
             >
               {personal.summary}
             </motion.p>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.85 }}
-              className="text-xl font-bold text-red-600 font-stranger tracking-widest uppercase glitch"
-              data-text={`${personal.role} // LEVEL 11 CLEARANCE`}
+              className="flex items-center gap-3"
             >
-              {personal.role} // LEVEL 11 CLEARANCE
-            </motion.p>
+              <div className="h-1 w-12 rounded-full bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.8)]" />
+              <p className="text-xl font-bold text-white tracking-[0.2em] uppercase font-sans">
+                {personal.role} <span className="text-red-500">_</span>
+              </p>
+            </motion.div>
           </div>
 
           <motion.div
@@ -140,23 +141,19 @@ const Hero = memo(() => {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          {/* Hawkins Lab Style Profile Card Wrapper */}
-          <div className="relative p-1 bg-gradient-to-br from-red-900 via-black to-red-900 rounded-2xl shadow-[0_0_30px_rgba(255,0,0,0.3)]">
-            <div className="bg-black rounded-xl overflow-hidden">
-              <ProfileCard
-                name={personal.name}
-                title={personal.role}
-                handle="DhruvSheladiya"
-                status="Online"
-                contactText="CONTACT"
-                avatarUrl={personal.photo}
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={false}
-                onContactClick={handleContactClick}
-              />
-            </div>
-          </div>
+          <ProfileCard
+            name={personal.name}
+            title={personal.role}
+            handle="DhruvSheladiya"
+            status="Online"
+            contactText="CONTACT"
+            avatarUrl={personal.photo}
+            showUserInfo={true}
+            enableTilt={true}
+            enableMobileTilt={false}
+            onContactClick={handleContactClick}
+            className="w-full max-w-md lg:max-w-lg"
+          />
 
           <div className="pointer-events-none absolute inset-0">
             {floatingIcons.map((item, index) => {

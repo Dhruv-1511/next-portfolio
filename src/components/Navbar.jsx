@@ -248,16 +248,16 @@ const Navbar = memo(() => {
           >
             {/* Stranger Things Style Logo */}
             <div className="flex leading-none items-center text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 stroke-red-500 uppercase tracking-widest drop-shadow-[0_0_5px_rgba(255,0,0,0.8)]">
-              <img
+              {/* <img
                 src="/logo192.png"
                 alt="Logo"
                 className="relative z-10 size-8 object-contain drop-shadow-lg "
-              />
+              /> */}
               <motion.span
                 className="text-3xl font-serif font-bold "
                 style={{ WebkitTextStroke: "1px #ff0909" }}
               >
-                HRUV
+                DHRUV
               </motion.span>
               <motion.div
                 className="h-0.5 w-full bg-red-600 shadow-[0_0_5px_#ff0000] mt-1"
@@ -277,7 +277,7 @@ const Navbar = memo(() => {
                   key={link.id}
                   type="button"
                   onClick={() => handleLinkClick(link.id)}
-                  className="group relative px-4 py-2 text-sm font-bold uppercase tracking-widest font-serif text-slate-300 hover:text-red-500 transition-colors"
+                  className="group relative px-4 py-2 text-sm font-bold uppercase tracking-widest font-serif text-red-200 hover:text-red-500 transition-colors"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}

@@ -93,7 +93,7 @@ const Experience = () => {
                       {item.workMode && (
                         <div className="flex items-center gap-1.5">
                           <FiBriefcase className="h-3.5 w-3.5 flex-shrink-0" />
-                          <span className="text-sm font-semibold text-slate-300">
+                          <span className="text-sm font-semibold text-red-200">
                             {item.workMode}
                           </span>
                         </div>
@@ -105,14 +105,14 @@ const Experience = () => {
                 <div className="hidden md:block" />
 
                 <div className="relative w-full">
-                  <div className="flex flex-col gap-6 text-sm leading-relaxed text-slate-300">
+                  <div className="flex flex-col gap-6 text-sm leading-relaxed text-red-200">
                     <header>
                       <h3 className="text-xl font-semibold text-white md:text-2xl">
                         {item.role}
                       </h3>
                     </header>
                     <section aria-label="Key achievements">
-                      <ul className="flex list-none flex-col gap-4 text-slate-300/90">
+                      <ul className="flex list-none flex-col gap-4 text-red-200/90">
                         {/* {item.achievements.map((achievement) => ( */}
                         <li className="leading-relaxed">{item.achievement}</li>
                         {/* ))} */}
@@ -144,14 +144,14 @@ const Experience = () => {
               <div className="relative h-full w-full">
                 <div className="absolute inset-0 left-1/2 hidden h-full w-1.5 -translate-x-1/2 rounded-full bg-slate-800/80 shadow-[inset_0_2px_4px_rgba(15,23,42,0.35)] md:block" />
                 <motion.div
-                  className="absolute inset-0 left-1/2 hidden h-full w-1.5 -translate-x-1/2 origin-top rounded-full bg-gradient-to-b from-pink-500 via-indigo-500 to-sky-400 md:block"
+                  className="absolute inset-0 left-1/2 hidden h-full w-1.5 -translate-x-1/2 origin-top rounded-full bg-gradient-to-b from-red-600 via-red-500 to-red-900 md:block"
                   style={{ scaleY: easedProgress }}
                 />
                 <motion.div
                   className="absolute left-1/2 hidden -translate-x-1/2 md:flex"
                   style={{ top: indicatorOffset }}
                 >
-                  <div className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-white/40 bg-slate-900 shadow-lg shadow-indigo-900/30">
+                  <div className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-white/40 bg-slate-900 shadow-lg shadow-red-900/50">
                     <img
                       src={personal.photo}
                       alt="Timeline avatar"

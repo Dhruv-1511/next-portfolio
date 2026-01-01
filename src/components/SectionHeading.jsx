@@ -23,7 +23,7 @@ const SectionHeading = memo(({ eyebrow, title, subtitle }) => (
       {title}
     </h2>
     {subtitle && (
-      <p className="mx-auto max-w-2xl text-lg text-slate-300 md:text-xl font-oswald tracking-wide">
+      <p className="mx-auto max-w-2xl text-lg text-red-200 md:text-xl font-oswald tracking-wide">
         {subtitle}
       </p>
     )}

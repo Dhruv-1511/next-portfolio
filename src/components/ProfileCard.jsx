@@ -14,6 +14,7 @@ const ProfileCard = memo(
     enableTilt = true,
     enableMobileTilt = false,
     onContactClick,
+    className = "max-w-sm",
   }) => {
     const cardRef = useRef(null);
     const x = useMotionValue(0);
@@ -76,7 +77,7 @@ const ProfileCard = memo(
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         style={cardStyle}
-        className="relative mx-auto max-w-sm"
+        className={`relative mx-auto ${className}`}
       >
         <motion.div
           animate={{ rotate: [0, 1, -1, 0] }}

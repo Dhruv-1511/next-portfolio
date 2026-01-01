@@ -94,7 +94,7 @@ const Skills = () => {
                           {skill.name}
                         </h3>
                         <motion.span
-                          className="flex-shrink-0 text-sm font-bold text-brand-300"
+                          className="flex-shrink-0 text-sm font-bold text-red-400"
                           initial={{ opacity: 0 }}
                           whileInView={{ opacity: 1 }}
                           viewport={{ once: true }}
@@ -107,7 +107,7 @@ const Skills = () => {
                       {/* Progress Bar */}
                       <div className="relative h-2 overflow-hidden rounded-full bg-white/5">
                         <motion.div
-                          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-brand-500 via-indigo-500 to-sky-400 shadow-lg"
+                          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-orange-500 shadow-lg"
                           initial={{ width: 0 }}
                           whileInView={{ width: `${skill.level}%` }}
                           viewport={{ once: true }}
