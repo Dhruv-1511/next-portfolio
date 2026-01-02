@@ -4,16 +4,31 @@ import {
   FiMail,
   FiPhone,
   FiMapPin,
-  FiCode,
-  FiZap,
   FiTarget,
   FiHeart,
-  FiCoffee,
+  FiZap,
+  FiCpu,
+  FiLock,
+  FiUnlock,
+  FiCheckCircle,
 } from "react-icons/fi";
 import SectionHeading from "../components/SectionHeading";
 import { useContentfulData } from "../context/ContentfulContext";
 
-const InteractivePhoto = memo(({ personal }) => {
+// --- Components ---
+
+const ScanlineOverlay = memo(() => (
+  <div
+    className="absolute inset-0 z-20 pointer-events-none opacity-20"
+    style={{
+      background:
+        "linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.5) 51%)",
+      backgroundSize: "100% 4px",
+    }}
+  />
+));
+
+const HoloProfile = memo(({ personal, className }) => {
   const [isMobile, setIsMobile] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -26,50 +41,31 @@ const InteractivePhoto = memo(({ personal }) => {
     );
   }, []);
 
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), {
     stiffness: 300,
     damping: 30,
   });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), {
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), {
     stiffness: 300,
     damping: 30,
   });
 
   const handleMouseMove = useCallback(
     (event) => {
-      // Disable on mobile for performance
       if (isMobile) return;
-
       const rect = event.currentTarget.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const mouseX = event.clientX - centerX;
-      const mouseY = event.clientY - centerY;
-      const normalizedX = mouseX / (rect.width / 2);
-      const normalizedY = mouseY / (rect.height / 2);
-      x.set(normalizedX);
-      y.set(normalizedY);
+      x.set((event.clientX - centerX) / (rect.width / 2));
+      y.set((event.clientY - centerY) / (rect.height / 2));
     },
     [isMobile, x, y]
   );
 
   const handleMouseLeave = useCallback(() => {
-    if (isMobile) return;
     x.set(0);
     y.set(0);
-  }, [isMobile, x, y]);
-
-  const photoStyle = useMemo(
-    () =>
-      isMobile
-        ? {}
-        : {
-            rotateX,
-            rotateY,
-            transformStyle: "preserve-3d",
-          },
-    [isMobile, rotateX, rotateY]
-  );
+  }, [x, y]);
 
   if (!personal) return null;
 
@@ -77,270 +73,352 @@ const InteractivePhoto = memo(({ personal }) => {
     <motion.div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative"
-      style={photoStyle}
+      className={`relative w-full max-w-sm mx-auto lg:max-w-none ${
+        className || ""
+      }`}
+      style={{
+        perspective: 1000,
+        rotateX: isMobile ? 0 : rotateX,
+        rotateY: isMobile ? 0 : rotateY,
+        transformStyle: "preserve-3d",
+      }}
     >
-      <div className="relative overflow-hidden rounded-3xl border border-red-900/30 bg-black p-4 shadow-[0_0_30px_rgba(255,0,0,0.1)]">
-        {/* Photo Container */}
-        <motion.div
-          className="relative aspect-[13/15] overflow-hidden rounded-2xl"
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.img
-            src={personal.redImg}
-            alt={`${personal.name} portrait`}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover sepia-[.4] hover:sepia-0 transition-all duration-500"
-            style={{ willChange: isMobile ? "auto" : "transform" }}
-            animate={isMobile ? {} : { scale: [1, 1.05, 1] }}
-            transition={{
-              duration: 8,
-              repeat: isMobile ? 0 : Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-tr from-red-900/20 via-transparent to-black/40"
-            animate={isMobile ? { opacity: 0.4 } : { opacity: [0.3, 0.5, 0.3] }}
-            transition={{
-              duration: 6,
-              repeat: isMobile ? 0 : Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        </motion.div>
+      <div className="relative z-10 p-2 bg-black/40 border border-red-900/40 rounded-sm backdrop-blur-sm h-full flex flex-col">
+        {/* Frame Corners */}
+        <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-red-600" />
+        <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-red-600" />
+        <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-red-600" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-red-600" />
 
-        {/* Decorative Border Glow */}
-        <motion.div
-          className="absolute inset-0 rounded-3xl border border-red-600/30"
-          animate={
-            isMobile
-              ? {}
-              : {
-                  boxShadow: [
-                    "0 0 20px rgba(255, 9, 9, 0.1)",
-                    "0 0 40px rgba(255, 9, 9, 0.2)",
-                    "0 0 20px rgba(255, 9, 9, 0.1)",
-                  ],
-                }
-          }
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
+        {/* Image Container */}
+        <div className="relative overflow-hidden bg-black group aspect-[4/5] lg:aspect-auto lg:flex-1">
+          <ScanlineOverlay />
+
+          {/* Glitch Image Layers */}
+          <motion.img
+            src={personal?.redImg}
+            alt="Subject 001"
+            className="relative z-10 w-full h-full object-cover opacity-90 sepia-[0.5] hue-rotate-[-30deg] contrast-125 hover:sepia-0 transition-all duration-300"
+          />
+
+          {/* Holograph Tint */}
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-red-500/10 to-blue-900/20 mix-blend-overlay" />
+
+          {/* Digital Noise / Glitch Overlay on Hover */}
+          <motion.div
+            className="absolute inset-0 z-30 opacity-0 group-hover:opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat"
+            animate={{ backgroundPosition: ["0% 0%", "100% 100%"] }}
+            transition={{ repeat: Infinity, duration: 0.2, ease: "linear" }}
+          />
+        </div>
+
+        {/* Status Bar */}
+        <div className="mt-2 flex justify-between items-center text-[10px] font-mono text-red-500 uppercase tracking-widest shrink-0">
+          <span>ID: {personal.name.split(" ")[0]}_001</span>
+          <span className="animate-pulse">● LIVE SIGNAL</span>
+        </div>
       </div>
     </motion.div>
   );
 });
 
-InteractivePhoto.displayName = "InteractivePhoto";
+HoloProfile.displayName = "HoloProfile";
 
-const StoryCard = memo(({ title, content, icon: Icon, index, gradient }) => {
+const DataModule = memo(({ title, content, icon: Icon, index }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative overflow-hidden rounded-2xl border border-red-900/20 bg-black/80 p-6 backdrop-blur-sm hover:border-red-600/50 transition-colors"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      whileHover={{ y: -6, scale: 1.02 }}
+      className="relative group bg-black/60 border border-red-900/30 p-6 overflow-hidden backdrop-blur-md h-full"
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
     >
-      {/* Animated Gradient Background */}
+      {/* Hover Reveal Background */}
       <motion.div
-        className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-20"
-        style={{ background: gradient }}
-        animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+        className="absolute inset-0 bg-red-900/10 z-0"
+        initial={{ scaleX: 0, originX: 0 }}
+        animate={{ scaleX: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.4, ease: "circOut" }}
       />
 
       <div className="relative z-10">
-        <div className="mb-4 flex items-center gap-3">
-          <motion.div
-            className="flex h-12 w-12 items-center justify-center rounded-xl border border-red-900/30 bg-red-900/10"
-            whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
-            transition={{ duration: 0.5 }}
+        <div className="flex justify-between items-start mb-4">
+          <div
+            className={`p-2 rounded-sm border ${
+              isHovered
+                ? "border-red-500 bg-red-500/20"
+                : "border-red-900/50 bg-transparent"
+            } transition-colors duration-300`}
           >
-            <Icon className="text-xl text-red-500" />
-          </motion.div>
-          <p className="text-lg font-bold text-white font-serif">{title}</p>
+            <Icon
+              className={`text-xl ${isHovered ? "text-white" : "text-red-600"}`}
+            />
+          </div>
+          <IconWrapper isHovered={isHovered} />
         </div>
-        <p className="text-sm leading-relaxed text-gray-400 font-mono">
+
+        <h3 className="text-xl font-bold font-oswald tracking-wide text-white mb-2 group-hover:text-red-400 transition-colors">
+          {title}
+        </h3>
+
+        <div className="h-px w-12 bg-red-800 mb-4 group-hover:w-full group-hover:bg-red-500 transition-all duration-500" />
+
+        <p className="text-sm font-mono text-red-200 leading-relaxed">
+          <span className="opacity-70">&gt; </span>
           {content}
         </p>
       </div>
 
-      {/* Corner Decoration */}
-      <motion.div
-        className="absolute -right-6 -top-6 h-24 w-24 rounded-full blur-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-30"
-        style={{ background: gradient }}
-      />
+      {/* Decorative Corner */}
+      <div className="absolute top-0 right-0 w-0 h-0 border-t-[40px] border-r-[40px] border-t-transparent border-r-red-900/20 group-hover:border-r-red-500/40 transition-colors" />
     </motion.div>
   );
 });
 
-StoryCard.displayName = "StoryCard";
+const IconWrapper = ({ isHovered }) => (
+  <div className="text-red-800 text-xs font-mono">
+    {isHovered ? (
+      <FiUnlock className="inline mr-1" />
+    ) : (
+      <FiLock className="inline mr-1" />
+    )}
+    {isHovered ? "ACCESS GRANTED" : "ENCRYPTED"}
+  </div>
+);
 
-const About = memo(() => {
-  const { content } = useContentfulData();
-  const { personal } = content;
+DataModule.displayName = "DataModule";
 
-  const storyCards = useMemo(
-    () =>
-      personal
-        ? [
-            {
-              title: "My Journey",
-              content: personal.summary,
-              icon: FiHeart,
-              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-            },
-            {
-              title: "Design Philosophy",
-              content:
-                "Human-centered decisions, inclusive interactions, and purposeful visuals that make interfaces memorable and accessible.",
-              icon: FiTarget,
-              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-            },
-            {
-              title: "Motion & Animation",
-              content:
-                "Micro-interactions, tactile motion language, and cinematic storytelling that flows with intent and delight.",
-              icon: FiZap,
-              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-            },
-            {
-              title: "Code & Performance",
-              content:
-                "Ship resilient architectures, lighthouse-friendly experiences, and scalable code ecosystems that grow with teams.",
-              icon: FiCode,
-              gradient: "linear-gradient(135deg, #ff4d4d, #ff0000)",
-            },
-          ]
-        : [],
-    [personal]
-  );
+const StatBar = ({ label, value }) => (
+  <div className="flex flex-col gap-1">
+    <div className="flex justify-between text-[10px] font-mono text-red-400">
+      <span>{label}</span>
+      <span>{value}%</span>
+    </div>
+    <div className="w-full h-1 bg-red-900/20 rounded-full overflow-hidden">
+      <motion.div
+        className="h-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"
+        initial={{ width: 0 }}
+        whileInView={{ width: `${value}%` }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      />
+    </div>
+  </div>
+);
 
-  if (!personal) {
-    return null;
-  }
+const TechTerminal = memo(() => {
+  const [logs, setLogs] = useState([
+    "> INITIALIZING_CORE_SYSTEMS...",
+    "> BYPASSING_SECURITY_NODES...",
+  ]);
+
+  useEffect(() => {
+    const messages = [
+      "> OPTIMIZING_RENDER_CYCLES...",
+      "> ALLOCATING_VIRTUAL_MEMORY...",
+      "> COMPILING_ASSETS_BUNDLE...",
+      "> ESTABLISHING_SECURE_UPLINK...",
+      "> VERIFYING_INTEGRITY_HASH...",
+      "> SYNCING_DATA_STREAMS...",
+      "> EXECUTING_SHELL_COMMANDS...",
+    ];
+
+    const interval = setInterval(() => {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      const time = new Date().toLocaleTimeString("en-US", {
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+      setLogs((prev) => [`[${time}] ${msg}`, ...prev].slice(0, 6));
+    }, 1200);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section id="about" className="relative scroll-mt-24 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 py-8 sm:py-16 md:py-24">
-        <SectionHeading
-          eyebrow="About Me"
-          title="Building interfaces with clarity, craft, and rhythm."
-          subtitle="Design-led development focusing on motion-rich storytelling, component scalability, and product velocity."
-        />
+    <div className="w-full h-48 bg-black/80 border border-red-900/30 rounded-md backdrop-blur-md relative overflow-hidden flex flex-col shadow-[0_0_20px_rgba(220,38,38,0.1)] group hover:border-red-500/50 transition-colors duration-500">
+      {/* Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-red-600/10 blur-[50px] rounded-full pointer-events-none" />
 
-        {/* Main Content - Split Layout */}
-        <div className="mt-12 grid gap-12 lg:grid-cols-[1.2fr,1fr]">
-          {/* Left Column - Photo & Quick Facts */}
-          <div className="space-y-8">
-            {/* Interactive Photo */}
-            <InteractivePhoto personal={personal} />
-          </div>
+      {/* Scanlines */}
+      <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[size:100%_3px] opacity-20 pointer-events-none z-10" />
 
-          {/* Right Column - Story Cards */}
-          <div className="space-y-4">
-            {storyCards.map((card, index) => (
-              <StoryCard key={card.title} {...card} index={index} />
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-2 border-b border-red-900/30 bg-red-950/20 z-20">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse shadow-[0_0_5px_rgba(239,68,68,0.8)]" />
+          <span className="text-red-500 font-bold font-mono tracking-widest text-[10px] uppercase">
+            Start_Up_Sequence
+          </span>
+        </div>
+        <div className="flex items-center gap-3 text-[10px] font-mono text-red-800">
+          <span className="flex items-center gap-1">
+            CPU <span className="text-red-400">READY</span>
+          </span>
+          <span className="flex items-center gap-1">
+            NET <span className="text-red-400">SECURE</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Content Grid */}
+      <div className="flex-1 grid grid-cols-[1.5fr,1fr] gap-4 p-4 z-20 overflow-hidden">
+        {/* Logs */}
+        <div className="flex flex-col justify-end">
+          <div className="space-y-1 font-mono text-[10px] text-red-500/80">
+            {logs.map((log, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1 - i * 0.1, x: 0 }}
+                className="whitespace-nowrap truncate"
+              >
+                <span className="text-red-700 mr-2">$</span>
+                {log}
+              </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Contact Section - Redesigned */}
-        <motion.div
-          className="mt-16 rounded-3xl border border-red-500/50 hover:border-red-500 transition-colors duration-300 bg-black/60 p-8 backdrop-blur-xl shadow-[0_0_20px_rgba(255,0,0,0.1)]"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-red-900/30 bg-red-900/10">
-              <FiCoffee className="text-red-500" />
-            </div>
-            <h3 className="text-lg font-bold text-white font-serif">
-              Let's Connect
-            </h3>
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <motion.a
-              href={`mailto:${personal.contact.email}`}
-              className="group relative overflow-hidden rounded-xl border border-red-800/50 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
-              whileHover={{ y: -2, scale: 1.02 }}
-            >
-              <div className="mb-3 flex items-center gap-2">
-                <FiMail className="text-red-500" />
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">
-                  Email
-                </p>
-              </div>
-              <p className="break-words text-sm font-semibold text-white font-mono">
-                {personal.contact.email}
-              </p>
-            </motion.a>
-            <motion.a
-              href={`tel:${personal.contact.phone}`}
-              className="group relative overflow-hidden rounded-xl border border-red-800/50 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
-              whileHover={{ y: -2, scale: 1.02 }}
-            >
-              <div className="mb-3 flex items-center gap-2">
-                <FiPhone className="text-red-500" />
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">
-                  Phone
-                </p>
-              </div>
-              <p className="text-sm font-semibold text-white font-mono">
-                {personal.contact.phone}
-              </p>
-            </motion.a>
-            <motion.div
-              className="group relative overflow-hidden rounded-xl border border-red-800/50 bg-black/40 p-5 backdrop-blur-sm transition-all hover:border-red-500 hover:bg-red-900/10"
-              whileHover={{ y: -2, scale: 1.02 }}
-            >
-              <div className="mb-3 flex items-center gap-2">
-                <FiMapPin className="text-red-500" />
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">
-                  Location
-                </p>
-              </div>
-              <p className="text-sm font-semibold text-white font-mono">
-                {personal.contact.location}
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>
+        {/* Stats Widget */}
+        <div className="flex flex-col justify-end gap-3 p-3 bg-red-900/5 border border-red-900/20 rounded">
+          <StatBar label="REACT_DOM" value={98} />
+          <StatBar label="HEAP_SIZE" value={62} />
+          <StatBar label="LATENCY" value={12} />
+        </div>
+      </div>
+    </div>
+  );
+});
+TechTerminal.displayName = "TechTerminal";
 
-        {/* Decorative Background Elements */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <motion.div
-            className="absolute right-0 top-1/4 h-96 w-96 rounded-full blur-3xl opacity-10"
-            style={{
-              background: "rgba(255, 9, 9, 0.4)",
-              willChange: "transform",
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              x: [0, 30, 0],
-              y: [0, -20, 0],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+const About = memo(() => {
+  const { content } = useContentfulData();
+  console.log(content);
+  // Hardcoded data to match the screenshot "ARCHIVE_001: IDENTITY"
+  const personal = {
+    name: "Dhruv Sheladiya",
+    redImg: content?.personal?.redImg, // Replace this URL with your actual profile image
+    contact: {
+      email: "dhruvsheladiya07@gmail.com",
+      phone: "+91 95103 34996",
+      location: "Remote & On-site",
+    },
+  };
+
+  const dataModules = [
+    {
+      title: "ORIGIN STORY",
+      content:
+        "I am a passionate frontend developer specializing in React.js, Next.js crafting snappy interfaces, immersive user journeys, and animation-rich experiences with modern tooling.",
+      icon: FiHeart,
+    },
+    {
+      title: "CORE DIRECTIVES",
+      content:
+        "Human-centric design patterns. Inclusive accessibility standards. Narrative-driven interfaces.",
+      icon: FiTarget,
+    },
+    {
+      title: "KINETIC PROTOCOLS",
+      content:
+        "Physics-based animation libraries. Micro-interaction choreography. Tactile feedback loops.",
+      icon: FiZap,
+    },
+    {
+      title: "SYSTEM ARCHITECTURE",
+      content:
+        "Server-side optimization. Headless CMS integration. Scalable component systems and robust architectures.",
+      icon: FiCpu,
+    },
+  ];
+
+  if (!personal) return null;
+
+  return (
+    <section
+      id="about"
+      className="relative py-24 px-6 overflow-hidden min-h-screen flex flex-col justify-center"
+    >
+      {/* Background Grid */}
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(rgba(20,0,0,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(20,0,0,0.5)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
+
+      <div className="max-w-7xl mx-auto w-full">
+        <SectionHeading
+          eyebrow="FILE: SUBJECT INFO"
+          title="ARCHIVE_001: IDENTITY"
+          subtitle="Decrypting the developer behind the code."
+        />
+
+        <div className="grid lg:grid-cols-[1fr,1.5fr] gap-12 mt-16 items-stretch">
+          {/* Column 1: Profile Entity */}
+          <div className="flex flex-col gap-8 h-full">
+            <HoloProfile personal={personal} className="flex-1" />
+
+            {/* Contact Terminal */}
+            <div className="border border-red-900/30 bg-black/80 p-6 font-mono text-sm relative shrink-0">
+              <div className="absolute -top-3 left-4 bg-black px-2 text-red-500 text-xs tracking-widest border border-red-900/30">
+                COMMUNICATION_UPLINK
+              </div>
+
+              <div className="space-y-4 pt-2">
+                <a
+                  href={`mailto:${personal.contact.email}`}
+                  className="flex items-center gap-4 text-gray-400 hover:text-red-400 transition-colors group"
+                >
+                  <span className="p-2 border border-red-900/30 rounded group-hover:border-red-500 group-hover:bg-red-900/20">
+                    <FiMail />
+                  </span>
+                  <span className="truncate">{personal.contact.email}</span>
+                </a>
+                <a
+                  href={`tel:${personal.contact.phone}`}
+                  className="flex items-center gap-4 text-gray-400 hover:text-red-400 transition-colors group"
+                >
+                  <span className="p-2 border border-red-900/30 rounded group-hover:border-red-500 group-hover:bg-red-900/20">
+                    <FiPhone />
+                  </span>
+                  <span>{personal.contact.phone}</span>
+                </a>
+                <div className="flex items-center gap-4 text-gray-400">
+                  <span className="p-2 border border-red-900/30 rounded">
+                    <FiMapPin />
+                  </span>
+                  <span>{personal.contact.location}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 2: Data Modules */}
+          <div className="flex flex-col gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+              {dataModules.map((module, idx) => (
+                <DataModule key={idx} {...module} index={idx} />
+              ))}
+            </div>
+
+            {/* System Diagnostics Row */}
+            <div className="border-t border-red-900/30 pt-6 mt-2">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <FiZap className="text-red-500 animate-pulse" />
+                  <span className="text-xs font-bold tracking-[0.2em] text-red-500 uppercase flex items-center gap-2">
+                    CORE_SYSTEMS_DIAGNOSTIC
+                  </span>
+                </div>
+                <div className="hidden sm:block text-[10px] text-red-800 font-mono bg-red-900/10 px-2 py-1 rounded">
+                  Status: <span className="text-red-400">OPTIMAL</span>
+                </div>
+              </div>
+              <TechTerminal />
+            </div>
+          </div>
         </div>
       </div>
     </section>

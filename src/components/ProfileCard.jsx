@@ -79,14 +79,14 @@ const ProfileCard = memo(
         style={cardStyle}
         className={`relative mx-auto ${className}`}
       >
-        <motion.div
+        {/* <motion.div
           animate={{ rotate: [0, 1, -1, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -inset-4 border border-red-900/30 bg-red-900/5"
           style={{
             clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
           }}
-        />
+        /> */}
 
         <motion.div
           whileHover={{ y: -6 }}
