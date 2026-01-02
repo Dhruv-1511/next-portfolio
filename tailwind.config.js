@@ -32,6 +32,8 @@ module.exports = {
           "0 0 20px rgba(255, 9, 9, 0.6), 0 0 40px rgba(255, 9, 9, 0.3)",
         "glow-red2":
           "0 0 10px rgba(255, 9, 9, 0.3), 0 0 20px rgba(255, 9, 9, 0.15)",
+        "glow-red3":
+          "0 0 15px rgba(255, 9, 9, 0.45), 0 0 30px rgba(255, 9, 9, 0.3)",
         "glow-blue": "0 0 20px rgba(10, 17, 40, 0.6)",
       },
       animation: {

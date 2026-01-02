@@ -97,7 +97,7 @@ const HoloProfile = memo(({ personal, className }) => {
           {/* Glitch Image Layers */}
           <motion.img
             src={personal?.redImg}
-            alt="Subject 001"
+            alt="Subject 011"
             className="relative z-10 w-full h-full object-cover opacity-90 sepia-[0.5] hue-rotate-[-30deg] contrast-125 hover:sepia-0 transition-all duration-300"
           />
 
@@ -315,25 +315,25 @@ const About = memo(() => {
     {
       title: "ORIGIN STORY",
       content:
-        "I am a passionate frontend developer specializing in React.js, Next.js crafting snappy interfaces, immersive user journeys, and animation-rich experiences with modern tooling.",
+        "Frontend architect forged in the React ecosystem. I specialize in deploying high-integrity Next.js environments, engineered for low-latency interactions and fluid cinematic motion.",
       icon: FiHeart,
     },
     {
       title: "CORE DIRECTIVES",
       content:
-        "Human-centric design patterns. Inclusive accessibility standards. Narrative-driven interfaces.",
+        "Priority 01: Human-centric node design. Priority 02: Universal accessibility protocols. Priority 03: Narrative-driven UI layers that bridge the gap between user and machine.",
       icon: FiTarget,
     },
     {
       title: "KINETIC PROTOCOLS",
       content:
-        "Physics-based animation libraries. Micro-interaction choreography. Tactile feedback loops.",
+        "Execution of advanced physics-based motion systems. Choreographing complex micro-interactions. Hard-wired tactile feedback loops for enhanced sensory immersion.",
       icon: FiZap,
     },
     {
       title: "SYSTEM ARCHITECTURE",
       content:
-        "Server-side optimization. Headless CMS integration. Scalable component systems and robust architectures.",
+        "Optimization of server-side data streams. Deployment of headless CMS interfaces. Constructing scalable, fault-tolerant component systems and polymorphic architectures.",
       icon: FiCpu,
     },
   ];

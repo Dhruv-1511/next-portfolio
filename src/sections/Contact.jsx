@@ -89,7 +89,7 @@ const Contact = () => {
         />
 
         <div className="grid gap-12 lg:grid-cols-[0.55fr,0.45fr]">
-          <div className="glow-frame">
+          <div>
             <motion.form
               onSubmit={handleSubmit}
               initial={{ opacity: 0, x: -40 }}
@@ -181,16 +181,6 @@ const Contact = () => {
                         ease: "linear",
                       }}
                     />
-                  )}
-
-                  {/* Corner accents */}
-                  {!isLoading && (
-                    <>
-                      <div className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-                      <div className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-                      <div className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-                      <div className="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-red-600/80 group-hover:border-red-500 transition-colors" />
-                    </>
                   )}
                 </div>
 

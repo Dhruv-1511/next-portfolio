@@ -124,7 +124,7 @@ const Experience = () => {
                           {item.skills.map((skill) => (
                             <span
                               key={skill}
-                              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-gradient-to-r from-slate-800/70 via-slate-900/60 to-transparent px-3 py-1 font-mono text-xs uppercase tracking-[0.35em] text-slate-200 shadow-sm"
+                              className="inline-flex items-center justify-center gap-2 rounded-full border border-red-900/30 bg-gradient-to-r from-red-950/40 via-red-900/20 to-transparent px-3 py-1 font-mono text-xs uppercase tracking-[0.35em] text-red-200 shadow-sm transition-colors hover:border-red-500/50 hover:text-red-100"
                             >
                               {skill}
                             </span>
