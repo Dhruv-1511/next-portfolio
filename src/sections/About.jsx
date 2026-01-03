@@ -131,7 +131,7 @@ const DataModule = memo(({ title, content, icon: Icon, index }) => {
     <motion.div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative group bg-black/60 border border-red-900/30 p-6 overflow-hidden backdrop-blur-md h-full"
+      className="relative group bg-black/60 border border-red-900/30 p-4 sm:p-6 overflow-hidden backdrop-blur-md h-full"
       initial={{ opacity: 0, x: -20 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
@@ -211,19 +211,19 @@ const StatBar = ({ label, value }) => (
 
 const TechTerminal = memo(() => {
   const [logs, setLogs] = useState([
-    "> INITIALIZING_CORE_SYSTEMS...",
-    "> BYPASSING_SECURITY_NODES...",
+    "> INITIALIZING_CREATIVE_CORE...",
+    "> CONNECTING_HUMAN_NODES...",
   ]);
 
   useEffect(() => {
     const messages = [
-      "> OPTIMIZING_RENDER_CYCLES...",
-      "> ALLOCATING_VIRTUAL_MEMORY...",
-      "> COMPILING_ASSETS_BUNDLE...",
-      "> ESTABLISHING_SECURE_UPLINK...",
-      "> VERIFYING_INTEGRITY_HASH...",
-      "> SYNCING_DATA_STREAMS...",
-      "> EXECUTING_SHELL_COMMANDS...",
+      "> BREWING_FRESH_IDEAS...",
+      "> TRANSLATING_EMOTIONS_TO_CODE...",
+      "> HUMANIZING_DIGITAL_INTERFACES...",
+      "> CRAFTING_USER_STORIES...",
+      "> DESIGNING_WITH_EMPATHY...",
+      "> CAPTURING_PIXEL_PERFECTION...",
+      "> SYNCING_CREATIVE_STREAMS...",
     ];
 
     const interval = setInterval(() => {
@@ -241,7 +241,7 @@ const TechTerminal = memo(() => {
   }, []);
 
   return (
-    <div className="w-full h-48 bg-black/80 border border-red-900/30 rounded-md backdrop-blur-md relative overflow-hidden flex flex-col shadow-[0_0_20px_rgba(220,38,38,0.1)] group hover:border-red-500/50 transition-colors duration-500">
+    <div className="w-full h-auto min-h-[240px] lg:h-48 bg-black/80 border border-red-900/30 rounded-md backdrop-blur-md relative overflow-hidden flex flex-col shadow-[0_0_20px_rgba(220,38,38,0.1)] group hover:border-red-500/50 transition-colors duration-500">
       {/* Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-red-600/10 blur-[50px] rounded-full pointer-events-none" />
 
@@ -267,9 +267,30 @@ const TechTerminal = memo(() => {
       </div>
 
       {/* Content Grid */}
-      <div className="flex-1 grid grid-cols-[1.5fr,1fr] gap-4 p-4 z-20 overflow-hidden">
-        {/* Logs */}
-        <div className="flex flex-col justify-end">
+      <div className="flex-1 grid grid-cols-1 sm:grid-cols-[1.5fr,1fr] gap-4 p-4 z-20 overflow-hidden">
+        {/* Left Column: Neural Link + Logs */}
+        <div className="flex flex-col justify-between">
+          {/* Neural Link Visualization */}
+          <div className="flex items-center gap-4 p-2 bg-red-900/5 border border-red-900/10 rounded mb-4">
+            <div className="relative w-8 h-8 flex items-center justify-center">
+              <motion.div
+                className="absolute inset-0 border border-red-500/30 rounded-full"
+                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <FiCpu className="text-red-500 text-sm" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[8px] font-mono text-red-800 uppercase tracking-tighter">
+                Neural_Link_Status
+              </span>
+              <span className="text-[10px] font-mono text-red-400 uppercase leading-none">
+                Synchronized
+              </span>
+            </div>
+          </div>
+
+          {/* Logs */}
           <div className="space-y-1 font-mono text-[10px] text-red-500/80">
             {logs.map((log, i) => (
               <motion.div
@@ -287,9 +308,9 @@ const TechTerminal = memo(() => {
 
         {/* Stats Widget */}
         <div className="flex flex-col justify-end gap-3 p-3 bg-red-900/5 border border-red-900/20 rounded">
-          <StatBar label="REACT_DOM" value={98} />
-          <StatBar label="HEAP_SIZE" value={62} />
-          <StatBar label="LATENCY" value={12} />
+          <StatBar label="EMPATHY_CORE" value={98} />
+          <StatBar label="CREATIVE_FLOW" value={85} />
+          <StatBar label="STORY_SYNC" value={92} />
         </div>
       </div>
     </div>
@@ -299,7 +320,7 @@ TechTerminal.displayName = "TechTerminal";
 
 const About = memo(() => {
   const { content } = useContentfulData();
-  console.log(content);
+
   // Hardcoded data to match the screenshot "ARCHIVE_001: IDENTITY"
   const personal = {
     name: "Dhruv Sheladiya",
@@ -319,16 +340,16 @@ const About = memo(() => {
       icon: FiHeart,
     },
     {
+      title: "DESIGN PHILOSOPHY",
+      content:
+        "I believe good design doesn’t start with pixels. It starts with people—their habits, quirks, and late-night rants about why they hate filling forms. It's all about the stories people tell without ever saying a word.",
+      icon: FiHeart,
+    },
+    {
       title: "CORE DIRECTIVES",
       content:
         "Priority 01: Human-centric node design. Priority 02: Universal accessibility protocols. Priority 03: Narrative-driven UI layers that bridge the gap between user and machine.",
       icon: FiTarget,
-    },
-    {
-      title: "KINETIC PROTOCOLS",
-      content:
-        "Execution of advanced physics-based motion systems. Choreographing complex micro-interactions. Hard-wired tactile feedback loops for enhanced sensory immersion.",
-      icon: FiZap,
     },
     {
       title: "SYSTEM ARCHITECTURE",
@@ -343,7 +364,7 @@ const About = memo(() => {
   return (
     <section
       id="about"
-      className="relative py-24 px-6 overflow-hidden min-h-screen flex flex-col justify-center"
+      className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden min-h-screen flex flex-col justify-center"
     >
       {/* Background Grid */}
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(rgba(20,0,0,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(20,0,0,0.5)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)] opacity-30" />
@@ -361,7 +382,7 @@ const About = memo(() => {
             <HoloProfile personal={personal} className="flex-1" />
 
             {/* Contact Terminal */}
-            <div className="border border-red-900/30 bg-black/80 p-6 font-mono text-sm relative shrink-0">
+            <div className="border border-red-900/30 bg-black/80 p-4 sm:p-6 font-mono text-sm relative shrink-0">
               <div className="absolute -top-3 left-4 bg-black px-2 text-red-500 text-xs tracking-widest border border-red-900/30">
                 COMMUNICATION_UPLINK
               </div>

@@ -100,7 +100,7 @@ const Contact = () => {
             >
               <div className="grid gap-6 md:grid-cols-2">
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                  <span className="text-xs uppercase tracking-[0.35em] text-red-100">
                     Name
                   </span>
                   <input
@@ -110,11 +110,11 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Jane Doe"
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-brand-400 focus:outline-none"
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-red-100/50 focus:border-brand-400 focus:outline-none"
                   />
                 </label>
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                  <span className="text-xs uppercase tracking-[0.35em] text-red-100">
                     Email
                   </span>
                   <input
@@ -124,12 +124,12 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="hello@example.com"
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-brand-400 focus:outline-none"
+                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-red-100/50 focus:border-brand-400 focus:outline-none"
                   />
                 </label>
               </div>
               <label className="mt-6 flex flex-col gap-2">
-                <span className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                <span className="text-xs uppercase tracking-[0.35em] text-red-100">
                   Message
                 </span>
                 <textarea
@@ -139,7 +139,7 @@ const Contact = () => {
                   required
                   rows="6"
                   placeholder="Tell me about your project..."
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-brand-400 focus:outline-none"
+                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-red-100/50 focus:border-brand-400 focus:outline-none"
                 />
               </label>
 

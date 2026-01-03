@@ -142,7 +142,7 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
 
               {/* Click Hint */}
               <motion.div
-                className="flex items-center gap-2 text-sm text-slate-200 font-oswald tracking-[0.25em] uppercase"
+                className="flex items-center gap-2 text-sm text-red-100 font-oswald tracking-[0.25em] uppercase"
                 animate={{
                   opacity: isHovered ? 1 : 0.7,
                 }}
@@ -318,7 +318,7 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
 
                       {/* Description */}
                       <motion.p
-                        className="mb-8 text-lg leading-relaxed text-slate-200 font-sans"
+                        className="mb-8 text-lg leading-relaxed text-red-100 font-sans"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6 }}
@@ -333,14 +333,14 @@ const ExpandableCard = ({ project, index, expanded, onExpand }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.7 }}
                       >
-                        <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">
+                        <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-red-200">
                           Technologies Used
                         </h3>
                         <div className="flex flex-wrap gap-3">
                           {project.stack.map((tag, tagIndex) => (
                             <motion.span
                               key={tag}
-                              className="rounded-lg border border-brand-500/40 bg-gradient-to-r from-black/70 via-slate-900/80 to-black/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-slate-100 backdrop-blur-sm"
+                              className="rounded-lg border border-brand-500/40 bg-gradient-to-r from-black/70 via-red-900/20 to-black/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-red-100 backdrop-blur-sm"
                               initial={{ opacity: 0, scale: 0.8 }}
                               animate={{ opacity: 1, scale: 1 }}
                               transition={{ delay: 0.8 + tagIndex * 0.05 }}

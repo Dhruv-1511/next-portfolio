@@ -42,7 +42,7 @@ const Home = memo(function Home() {
       </AnimatePresence>
 
       {!showLoader && (
-        <div className="relative min-h-screen bg-transparent text-slate-200 font-sans selection:bg-red-900 selection:text-white">
+        <div className="relative min-h-screen bg-transparent text-red-100 font-sans selection:bg-red-900 selection:text-white">
           <div className="upside-down-overlay" />
           <ParticlesBackground />
           <Navbar />

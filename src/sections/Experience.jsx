@@ -64,7 +64,7 @@ const Experience = () => {
               >
                 <div className="w-full lg:max-w-sm">
                   <div className="flex flex-col items-start gap-y-3 text-sm font-light">
-                    <time className="text-xs font-semibold uppercase tracking-[0.45em] text-slate-400">
+                    <time className="text-xs font-semibold uppercase tracking-[0.45em] text-white">
                       {item.duration}
                     </time>
                     <div className="flex items-center gap-3">
@@ -83,7 +83,7 @@ const Experience = () => {
                         {item.company}
                       </h2>
                     </div>
-                    <div className="flex flex-col gap-2 text-slate-400">
+                    <div className="flex flex-col gap-2 text-white">
                       {item.location && (
                         <div className="flex items-center gap-1.5">
                           <FiMapPin className="h-3.5 w-3.5 flex-shrink-0" />
@@ -93,7 +93,7 @@ const Experience = () => {
                       {item.workMode && (
                         <div className="flex items-center gap-1.5">
                           <FiBriefcase className="h-3.5 w-3.5 flex-shrink-0" />
-                          <span className="text-sm font-semibold text-red-200">
+                          <span className="text-sm font-semibold text-white">
                             {item.workMode}
                           </span>
                         </div>
@@ -112,7 +112,7 @@ const Experience = () => {
                       </h3>
                     </header>
                     <section aria-label="Key achievements">
-                      <ul className="flex list-none flex-col gap-4 text-red-200/90">
+                      <ul className="flex list-none flex-col gap-4 text-white">
                         {/* {item.achievements.map((achievement) => ( */}
                         <li className="leading-relaxed">{item.achievement}</li>
                         {/* ))} */}
@@ -124,7 +124,7 @@ const Experience = () => {
                           {item.skills.map((skill) => (
                             <span
                               key={skill}
-                              className="inline-flex items-center justify-center gap-2 rounded-full border border-red-900/30 bg-gradient-to-r from-red-950/40 via-red-900/20 to-transparent px-3 py-1 font-mono text-xs uppercase tracking-[0.35em] text-red-200 shadow-sm transition-colors hover:border-red-500/50 hover:text-red-100"
+                              className="inline-flex items-center justify-center gap-2 rounded-full border border-red-900/30 bg-gradient-to-r from-red-950/40 via-red-900/20 to-transparent px-3 py-1 font-mono text-xs uppercase tracking-[0.35em] text-white shadow-sm transition-colors hover:border-red-500/50 hover:text-red-100"
                             >
                               {skill}
                             </span>
