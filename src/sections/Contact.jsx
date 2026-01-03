@@ -89,7 +89,7 @@ const Contact = () => {
         />
 
         <div className="grid gap-12 lg:grid-cols-[0.55fr,0.45fr]">
-          <div>
+          <div className="glass-card rounded-3xl">
             <motion.form
               onSubmit={handleSubmit}
               initial={{ opacity: 0, x: -40 }}

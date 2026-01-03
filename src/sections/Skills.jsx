@@ -147,7 +147,7 @@ const Skills = () => {
                             ease: "easeInOut",
                           }}
                         />
-                        <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-400">
+                        <span className="text-xs font-medium uppercase tracking-[0.2em] text-red-200">
                           {skill.level >= 90
                             ? "Expert"
                             : skill.level >= 70
